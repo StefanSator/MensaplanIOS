@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Meal : CustomStringConvertible {
     //MARK: Properties
@@ -14,6 +15,7 @@ class Meal : CustomStringConvertible {
     let day: String
     let category: String
     var cost: (students: Double, employees: Double, guests: Double)
+    var image: UIImage?
     public var description: String {
         return "Meal: \(name), Day: \(day), Category: \(category), studentPrize: \(cost.students), employeePrize: \(cost.employees), guestPrize: \(cost.guests)"
     }
@@ -24,6 +26,7 @@ class Meal : CustomStringConvertible {
         self.day = day
         self.category = category
         self.cost = (studentPrice, employeePrice, guestPrice)
+        setRightImage(category: category)
     }
     
     init?(dictionary: NSDictionary) {
@@ -44,5 +47,21 @@ class Meal : CustomStringConvertible {
         self.day = day
         self.category = category
         self.cost = (studentPrice, employeePrice, guestPrice)
+        setRightImage(category: category)
+    }
+    
+    //MARK: Private Functions
+    private func setRightImage(category: String) {
+        if category.hasPrefix("S") {
+            image = UIImage(named: "Soup")
+        } else if category.hasPrefix("HG") {
+            image = UIImage(named: "MainDish")
+        } else if category.hasPrefix("B") {
+            image = UIImage(named: "SideDish")
+        } else if category.hasPrefix("N") {
+            image = UIImage(named: "Dessert")
+        } else {
+            image = nil
+        }
     }
 }

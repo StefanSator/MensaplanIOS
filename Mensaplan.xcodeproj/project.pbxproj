@@ -11,6 +11,7 @@
 		9EFB4865C7E1A48C9CF5F800 /* Pods_MensaplanTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C866BE44F242A2D599C0783 /* Pods_MensaplanTests.framework */; };
 		EA8C80E32327D152008C572C /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E22327D152008C572C /* Meal.swift */; };
 		EA8C80E52328FBB1008C572C /* MealTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */; };
+		EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E6232900F1008C572C /* MealTableViewController.swift */; };
 		EAAFA3692327AE7400904EB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAFA3682327AE7400904EB3 /* AppDelegate.swift */; };
 		EAAFA36B2327AE7400904EB3 /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAFA36A2327AE7400904EB3 /* MealViewController.swift */; };
 		EAAFA36E2327AE7400904EB3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EAAFA36C2327AE7400904EB3 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 		AEEEB80E84509CD39E149BB7 /* Pods-MensaplanTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MensaplanTests.release.xcconfig"; path = "Target Support Files/Pods-MensaplanTests/Pods-MensaplanTests.release.xcconfig"; sourceTree = "<group>"; };
 		EA8C80E22327D152008C572C /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
 		EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTableViewCell.swift; sourceTree = "<group>"; };
+		EA8C80E6232900F1008C572C /* MealTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTableViewController.swift; sourceTree = "<group>"; };
 		EAAFA3652327AE7400904EB3 /* Mensaplan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mensaplan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAFA3682327AE7400904EB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EAAFA36A2327AE7400904EB3 /* MealViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				EAAFA36A2327AE7400904EB3 /* MealViewController.swift */,
 				EA8C80E22327D152008C572C /* Meal.swift */,
 				EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */,
+				EA8C80E6232900F1008C572C /* MealTableViewController.swift */,
 				EAAFA36C2327AE7400904EB3 /* Main.storyboard */,
 				EAAFA36F2327AE7500904EB3 /* Assets.xcassets */,
 				EAAFA3712327AE7500904EB3 /* LaunchScreen.storyboard */,
@@ -284,6 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */,
 				EA8C80E52328FBB1008C572C /* MealTableViewCell.swift in Sources */,
 				EAAFA36B2327AE7400904EB3 /* MealViewController.swift in Sources */,
 				EA8C80E32327D152008C572C /* Meal.swift in Sources */,
