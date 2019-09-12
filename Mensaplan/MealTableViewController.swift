@@ -11,6 +11,10 @@ import UIKit
 class MealTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //MARK: Properties
     var meals = [Meal]()
+    private var mealsDictionary = [ 0: [Meal](),
+                            1: [Meal](),
+                            2: [Meal](),
+                            3: [Meal]()]
     @IBOutlet weak var mealTableView: UITableView!
     
     override func viewDidLoad() {
@@ -22,11 +26,11 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
 
     //MARK: Table view data source
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return mealsDictionary.count
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return meals.count
+        return mealsDictionary[section]!.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -35,12 +39,29 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
             fatalError("Error in trying to downcast UITableViewCell to Type: MealTableViewCell.")
         }
         // Configure the cell
-        let meal = meals[indexPath.row]
+        let meal = mealsDictionary[indexPath.section]![indexPath.row]
         cell.mealImage.image = meal.image
         cell.mealNameLabel.text = meal.name
         cell.mealPrizeLabel.text = "\(meal.cost.students), \(meal.cost.employees), \(meal.cost.guests)"
 
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let sectionTitle: String?
+        switch section {
+        case 0:
+            sectionTitle = "Suppen"
+        case 1:
+            sectionTitle = "Hauptgerichte"
+        case 2:
+            sectionTitle = "Nebengerichte"
+        case 3:
+            sectionTitle = "Desserts"
+        default:
+            sectionTitle = nil
+        }
+        return sectionTitle
     }
     
     //MARK: Actions
@@ -83,8 +104,8 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
             }
             // Parse response data to JSON
             do {
-                let json = try JSONSerialization.jsonObject(with: data!, options: []) as! NSArray
-                self.initializeMealArray(withArray: json)
+                let mealArray = try JSONSerialization.jsonObject(with: data!, options: []) as! NSArray
+                self.initializeMealDictionary(withArray: mealArray)
             } catch let error {
                 fatalError("JSON error: \(error.localizedDescription)")
             }
@@ -98,10 +119,13 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     private func clearAllMealData() {
-        meals = [Meal]()
+        mealsDictionary[0]!.removeAll()
+        mealsDictionary[1]!.removeAll()
+        mealsDictionary[2]!.removeAll()
+        mealsDictionary[3]!.removeAll()
     }
     
-    private func initializeMealArray(withArray: NSArray) {
+    private func initializeMealDictionary(withArray: NSArray) {
         for object in withArray {
             guard let dictionary = object as? NSDictionary else {
                 fatalError("An Error occurred while converting Object to NSDictionary.")
@@ -109,7 +133,17 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
             guard let meal = Meal(dictionary: dictionary) else {
                 fatalError("An Error occurred while trying to create a Meal Object from a Dictionary.")
             }
-            meals.append(meal)
+            if meal.category.hasPrefix("S") {
+                mealsDictionary[0]!.append(meal)
+            } else if meal.category.hasPrefix("HG") {
+                mealsDictionary[1]!.append(meal)
+            } else if meal.category.hasPrefix("B") {
+                mealsDictionary[2]!.append(meal)
+            } else if meal.category.hasPrefix("N") {
+                mealsDictionary[3]!.append(meal)
+            } else {
+                fatalError("The meal category doesn't exist.")
+            }
         }
     }
 
