@@ -65,6 +65,10 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     //MARK: Actions
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "showMealSegue", sender: self)
+    }
+    
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
         clearAllMealData()
         switch sender.selectedSegmentIndex {
@@ -80,6 +84,27 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
             loadMealData(weekDay: "fr")
         default:
             fatalError("The selected Index in UISegmentedControl doesn't exist.")
+        }
+    }
+    
+    //MARK: Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        switch (segue.identifier ?? "") {
+        case "showMealSegue":
+            guard let mealViewController = segue.destination as? MealViewController else {
+                fatalError("Unexpected destination: \(segue.destination)")
+            }
+            guard let indexPath = mealTableView.indexPathForSelectedRow else {
+                fatalError("Selected Cell not being displayed in table.")
+            }
+            guard let meals = mealsDictionary[indexPath.section] else {
+                fatalError("Could not retrieve array of meals in the section.")
+            }
+            let selectedMeal = meals[indexPath.row]
+            mealViewController.meal = selectedMeal
+        default:
+            fatalError("Segue Identifier unknown: \(String(describing: segue.identifier))")
         }
     }
     
