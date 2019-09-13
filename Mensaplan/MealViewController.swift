@@ -16,6 +16,7 @@ class MealViewController: UIViewController {
     @IBOutlet weak var studentPrize: UILabel!
     @IBOutlet weak var guestPrize: UILabel!
     @IBOutlet weak var employeePrize: UILabel!
+    @IBOutlet weak var cancelButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()

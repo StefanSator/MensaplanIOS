@@ -34,14 +34,15 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ga8-cb-fpe">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ga8-cb-fpe" customClass="RoundedButton" customModule="Mensaplan" customModuleProvider="target">
                                         <rect key="frame" x="98" y="380" width="118" height="30"/>
+                                        <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="aeo-9m-hcH"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Cancel">
-                                            <color key="titleColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
                                         <connections>
                                             <action selector="cancel:" destination="BYZ-38-t0r" eventType="touchUpInside" id="l2O-8H-OaX"/>
@@ -71,6 +72,26 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tPk-TV-qVn">
+                                        <rect key="frame" x="30" y="281" width="40" height="72"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="SzR-Zh-xJD"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="50"/>
+                                        <state key="normal" title="+">
+                                            <color key="titleColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Als Favorit hinzufügen" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qou-hZ-LR4">
+                                        <rect key="frame" x="80" y="281" width="80" height="72"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="72" id="Mrs-3s-uYG"/>
+                                            <constraint firstAttribute="width" constant="80" id="zUS-GK-PJH"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -78,19 +99,23 @@
                                     <constraint firstItem="k1Z-Fe-Zm6" firstAttribute="leading" secondItem="EzV-4m-xRd" secondAttribute="leading" constant="35" id="6pc-Ts-HNr"/>
                                     <constraint firstItem="pRc-d0-eu4" firstAttribute="leading" secondItem="EzV-4m-xRd" secondAttribute="leading" constant="8" id="AeH-gV-nbf"/>
                                     <constraint firstItem="7PN-mD-Qpf" firstAttribute="top" secondItem="VYF-MS-zsK" secondAttribute="bottom" constant="8" id="Cwf-Kb-yJj"/>
+                                    <constraint firstItem="Qou-hZ-LR4" firstAttribute="leading" secondItem="tPk-TV-qVn" secondAttribute="trailing" constant="10" id="LQE-HB-LTo"/>
                                     <constraint firstItem="VYF-MS-zsK" firstAttribute="top" secondItem="k1Z-Fe-Zm6" secondAttribute="bottom" constant="8" id="MiH-YT-RZg"/>
                                     <constraint firstItem="Ga8-cb-fpe" firstAttribute="leading" secondItem="EzV-4m-xRd" secondAttribute="leading" constant="98" id="MtL-Kg-UXT"/>
                                     <constraint firstItem="EzV-4m-xRd" firstAttribute="trailing" secondItem="7PN-mD-Qpf" secondAttribute="trailing" constant="8" id="OJt-VQ-bA4"/>
                                     <constraint firstItem="EzV-4m-xRd" firstAttribute="trailing" secondItem="k1Z-Fe-Zm6" secondAttribute="trailing" constant="8" id="PHQ-2v-nyi"/>
                                     <constraint firstItem="VYF-MS-zsK" firstAttribute="leading" secondItem="EzV-4m-xRd" secondAttribute="leading" constant="35" id="RaQ-XL-EDJ"/>
                                     <constraint firstItem="7D3-hy-oYJ" firstAttribute="top" secondItem="EzV-4m-xRd" secondAttribute="top" constant="25" id="ZE2-A2-pjE"/>
+                                    <constraint firstItem="tPk-TV-qVn" firstAttribute="leading" secondItem="EzV-4m-xRd" secondAttribute="leading" constant="30" id="buU-e9-0je"/>
                                     <constraint firstItem="bBe-lo-iYk" firstAttribute="leading" secondItem="EzV-4m-xRd" secondAttribute="leading" constant="15" id="dnf-yH-d89"/>
                                     <constraint firstItem="k1Z-Fe-Zm6" firstAttribute="top" secondItem="bBe-lo-iYk" secondAttribute="bottom" constant="8" id="epS-Xs-PFf"/>
                                     <constraint firstItem="pRc-d0-eu4" firstAttribute="top" secondItem="EzV-4m-xRd" secondAttribute="top" constant="8" id="hDg-cS-TdI"/>
                                     <constraint firstItem="7PN-mD-Qpf" firstAttribute="leading" secondItem="EzV-4m-xRd" secondAttribute="leading" constant="35" id="pFf-e5-gft"/>
                                     <constraint firstItem="7D3-hy-oYJ" firstAttribute="leading" secondItem="pRc-d0-eu4" secondAttribute="trailing" constant="6" id="pug-2U-GNA"/>
+                                    <constraint firstItem="EzV-4m-xRd" firstAttribute="bottom" secondItem="tPk-TV-qVn" secondAttribute="bottom" constant="65" id="qEn-8i-tZ2"/>
                                     <constraint firstItem="Ga8-cb-fpe" firstAttribute="centerX" secondItem="I7t-HR-xwK" secondAttribute="centerX" id="rUP-SE-B3T"/>
                                     <constraint firstItem="EzV-4m-xRd" firstAttribute="trailing" secondItem="VYF-MS-zsK" secondAttribute="trailing" constant="8" id="rgv-4d-t34"/>
+                                    <constraint firstItem="Ga8-cb-fpe" firstAttribute="top" secondItem="Qou-hZ-LR4" secondAttribute="bottom" constant="27" id="uev-Cn-qmG"/>
                                     <constraint firstItem="EzV-4m-xRd" firstAttribute="trailing" secondItem="7D3-hy-oYJ" secondAttribute="trailing" constant="8" id="vAT-Xa-Cow"/>
                                     <constraint firstItem="Ga8-cb-fpe" firstAttribute="bottom" secondItem="I7t-HR-xwK" secondAttribute="bottomMargin" id="wdJ-15-A1e"/>
                                     <constraint firstItem="EzV-4m-xRd" firstAttribute="trailing" secondItem="bBe-lo-iYk" secondAttribute="trailing" constant="8" id="xsS-K6-Fec"/>
@@ -109,6 +134,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="cancelButton" destination="Ga8-cb-fpe" id="2SC-ms-UpM"/>
                         <outlet property="employeePrize" destination="7PN-mD-Qpf" id="wdK-ey-gtC"/>
                         <outlet property="guestPrize" destination="VYF-MS-zsK" id="17M-r3-LaX"/>
                         <outlet property="mealImage" destination="pRc-d0-eu4" id="ukQ-Hs-bih"/>
