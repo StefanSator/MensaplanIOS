@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="hgn-9C-2Mv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Vxu-zV-yoc">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -82,7 +82,7 @@
                                             <color key="titleColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Als Favorit hinzufügen" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qou-hZ-LR4">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Zu Favoriten hinzufügen" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qou-hZ-LR4">
                                         <rect key="frame" x="80" y="281" width="80" height="72"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="72" id="Mrs-3s-uYG"/>
@@ -144,9 +144,43 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="15.942028985507248" y="20.758928571428569"/>
+            <point key="canvasLocation" x="-777" y="-237"/>
         </scene>
-        <!--Meal Table View Controller-->
+        <!--Tab Bar Controller-->
+        <scene sceneID="pji-zQ-i1b">
+            <objects>
+                <tabBarController id="Vxu-zV-yoc" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fkt-cQ-cF2">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="hgn-9C-2Mv" kind="relationship" relationship="viewControllers" id="j6J-U1-teH"/>
+                        <segue destination="nSA-js-ZMn" kind="relationship" relationship="viewControllers" id="oIE-zI-WU3"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kkl-Gw-Ir1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2584" y="7"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="KKi-9b-uut">
+            <objects>
+                <viewController id="nSA-js-ZMn" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3FX-D7-84a">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="nim-BK-9Ag"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" systemItem="favorites" id="jos-Bu-pie"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TcD-E1-Fcl" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1729" y="447"/>
+        </scene>
+        <!--Gerichte-->
         <scene sceneID="3Nd-I3-Cw0">
             <objects>
                 <viewController id="hgn-9C-2Mv" customClass="MealTableViewController" customModule="Mensaplan" customModuleProvider="target" sceneMemberID="viewController">
@@ -155,7 +189,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JVJ-Gh-Y7R">
-                                <rect key="frame" x="0.0" y="44" width="414" height="780"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="719"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MealTableViewCell" rowHeight="90" id="bbw-6Z-MAa" customClass="MealTableViewCell" customModule="Mensaplan" customModuleProvider="target">
@@ -217,7 +251,10 @@
                                 </prototypes>
                             </tableView>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="wuc-4v-8QN">
-                                <rect key="frame" x="20" y="834" width="374" height="29"/>
+                                <rect key="frame" x="20" y="773" width="374" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Hmo-sU-d6W"/>
+                                </constraints>
                                 <segments>
                                     <segment title="Mon"/>
                                     <segment title="Tue"/>
@@ -235,20 +272,24 @@
                             <constraint firstItem="JVJ-Gh-Y7R" firstAttribute="leading" secondItem="W89-I0-sRy" secondAttribute="leading" id="4LC-yX-oin"/>
                             <constraint firstItem="W89-I0-sRy" firstAttribute="trailing" secondItem="wuc-4v-8QN" secondAttribute="trailing" constant="20" id="EHm-Ns-BnP"/>
                             <constraint firstItem="JVJ-Gh-Y7R" firstAttribute="trailing" secondItem="W89-I0-sRy" secondAttribute="trailing" id="I1a-Fi-cx9"/>
-                            <constraint firstItem="W89-I0-sRy" firstAttribute="bottom" secondItem="wuc-4v-8QN" secondAttribute="bottom" id="Qxa-ed-9Ra"/>
-                            <constraint firstItem="wuc-4v-8QN" firstAttribute="top" secondItem="JVJ-Gh-Y7R" secondAttribute="bottom" constant="10" id="R60-Jf-p3N"/>
+                            <constraint firstItem="W89-I0-sRy" firstAttribute="bottom" secondItem="wuc-4v-8QN" secondAttribute="bottom" constant="10" id="JQJ-KE-UX0"/>
                             <constraint firstItem="JVJ-Gh-Y7R" firstAttribute="top" secondItem="W89-I0-sRy" secondAttribute="top" id="cnM-sk-UpF"/>
+                            <constraint firstItem="wuc-4v-8QN" firstAttribute="top" secondItem="JVJ-Gh-Y7R" secondAttribute="bottom" constant="10" id="mxK-UP-igl"/>
                             <constraint firstItem="wuc-4v-8QN" firstAttribute="leading" secondItem="W89-I0-sRy" secondAttribute="leading" constant="20" id="v7b-zt-jhl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="W89-I0-sRy"/>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Gerichte" image="MealTab" landscapeImage="MealTab" id="dlr-is-3QZ"/>
                     <connections>
                         <outlet property="mealTableView" destination="JVJ-Gh-Y7R" id="bRW-Td-u81"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RoS-LU-uaM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-888" y="21"/>
+            <point key="canvasLocation" x="-1722" y="-237"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="MealTab" width="25" height="25"/>
+    </resources>
 </document>
