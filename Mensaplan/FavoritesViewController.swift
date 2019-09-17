@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class FavoritesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ChangedFavoritesDelegate {
     //MARK: Properties
     var favoriteMeals = [Meal]()
     @IBOutlet weak var favoritesTableView: UITableView!
@@ -17,11 +17,7 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
         favoritesTableView.dataSource = self
         favoritesTableView.delegate = self
-        let savedFavoriteMeals = loadFavoriteMeals()
-        if savedFavoriteMeals != nil {
-            favoriteMeals = savedFavoriteMeals!
-            favoritesTableView.reloadData()
-        }
+        loadTableData()
     }
     
     //MARK: Table view data source
@@ -47,6 +43,13 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         return cell
     }
     
+    //MARK: ChangedFavoritesDelegate
+    func changesInFavorites(_ changes: Bool) {
+        if changes == true {
+            loadTableData()
+        }
+    }
+    
     //MARK: Actions
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "showMealSegue", sender: self)
@@ -65,6 +68,7 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
             }
             let selectedMeal = favoriteMeals[indexPath.row]
             mealViewController.meal = selectedMeal
+            mealViewController.delegate = self
         default:
             fatalError("Segue Identifier unknown: \(String(describing: segue.identifier))")
         }
@@ -73,6 +77,15 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
     //MARK: NSCoding
     private func loadFavoriteMeals() -> [Meal]? {
         return NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
+    }
+    
+    // Private Functions
+    private func loadTableData() {
+        let savedFavoriteMeals = loadFavoriteMeals()
+        if savedFavoriteMeals != nil {
+            favoriteMeals = savedFavoriteMeals!
+            favoritesTableView.reloadData()
+        }
     }
 
 }

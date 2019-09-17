@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol ChangedFavoritesDelegate {
+    func changesInFavorites(_ changes: Bool)
+}
+
 class MealViewController: UIViewController {
     //MARK: Properties
+    var delegate: ChangedFavoritesDelegate?
     var meal : Meal?
     @IBOutlet weak var mealImage: UIImageView!
     @IBOutlet weak var mealName: UILabel!
@@ -62,6 +67,8 @@ class MealViewController: UIViewController {
             print("Error by trying to save meal object as favorite of the user. Meal Object not saved! Error: \(error.localizedDescription)")
         }
         print("Meal saved as Favorite of the user.")
+        // Tell the Delegate that there where changes
+        self.delegate?.changesInFavorites(true)
     }
     
     //Delete Persisted Meal Data
@@ -73,7 +80,6 @@ class MealViewController: UIViewController {
             print("Error by trying to delete favorite meals. Error: \(error.localizedDescription)")
         }
     }
-
 
 }
 

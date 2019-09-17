@@ -21,8 +21,6 @@ class Meal : NSObject, NSCoding {
     }
     
     //MARK: Archiving Paths
-    /* static let DocumentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.appendingPathComponent("favorites") */
     static var ArchiveURL : URL {
         let manager = FileManager.default
         let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first!
@@ -31,7 +29,7 @@ class Meal : NSObject, NSCoding {
     
     //MARK:Types
     struct PropertyKey {
-        static let name = ""
+        static let name = "name"
         static let day = "day"
         static let category = "category"
         static let studentCosts = "studentcosts"
@@ -94,16 +92,9 @@ class Meal : NSObject, NSCoding {
         guard let category = aDecoder.decodeObject(forKey: PropertyKey.category) as? String else {
             fatalError("Unable to decode the category property which is required for a Meal Object.")
         }
-        // TODO: Error Solving
         let studentCosts = aDecoder.decodeDouble(forKey: PropertyKey.studentCosts)
         let employeeCosts = aDecoder.decodeDouble(forKey: PropertyKey.employeeCosts)
         let guestCosts = aDecoder.decodeDouble(forKey: PropertyKey.guestCosts)
-        /* guard let studentCosts = aDecoder.decodeObject(forKey: PropertyKey.studentCosts) as? String,
-            let employeeCosts = aDecoder.decodeObject(forKey: PropertyKey.employeeCosts) as? String,
-            let guestCosts = aDecoder.decodeObject(forKey: PropertyKey.guestCosts) as? String
-        else {
-            fatalError("Unable to decode the cost property which is required for a Meal Object.")
-        } */
         
         self.init(name: name, day: day, category: category, studentPrice: studentCosts, employeePrice: employeeCosts, guestPrice: guestCosts)
     }
