@@ -239,7 +239,13 @@
                             <outlet property="delegate" destination="Yhg-WG-9hT" id="x09-3y-Lp4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="bjg-oK-Dif"/>
+                    <navigationItem key="navigationItem" id="bjg-oK-Dif">
+                        <barButtonItem key="rightBarButtonItem" title="Delete All" id="dkB-SY-gGR">
+                            <connections>
+                                <action selector="deletaAllFavoriteMeals:" destination="Yhg-WG-9hT" id="wZC-LU-fN5"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="favoritesTableView" destination="uSB-o9-RZj" id="7LS-c9-FTl"/>
                         <segue destination="BYZ-38-t0r" kind="presentation" identifier="showMealSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="K4S-6E-dMz"/>

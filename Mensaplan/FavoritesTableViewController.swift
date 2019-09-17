@@ -78,6 +78,13 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
         performSegue(withIdentifier: "showMealSegue", sender: self)
     }
     
+    @IBAction func deletaAllFavoriteMeals(_ sender: UIBarButtonItem) {
+        deleteArchivedFavoriteMeals()
+        favoriteMeals = [Meal]()
+        favoritesTableView.reloadData()
+    }
+    
+    
     //MARK: Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -110,6 +117,17 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
             print("Error by trying to save meals as favorite of the user. Meals not saved! Error: \(error.localizedDescription)")
         }
         print("Meals saved as Favorites of the user.")
+    }
+    
+    //Delete Persisted Meal Data
+    private func deleteArchivedFavoriteMeals() {
+        do {
+            let manager = FileManager.default
+            try manager.removeItem(at: Meal.ArchiveURL)
+            print("All Favorites deleted.")
+        } catch let error {
+            print("Error by trying to delete favorite meals. Error: \(error.localizedDescription)")
+        }
     }
     
     // Private Functions

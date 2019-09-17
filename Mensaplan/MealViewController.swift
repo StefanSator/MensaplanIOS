@@ -116,16 +116,6 @@ class MealViewController: UIViewController {
         }
     }
     
-    //Delete Persisted Meal Data
-    private func deleteArchivedFavoriteMeals() {
-        do {
-            let manager = FileManager.default
-            try manager.removeItem(at: Meal.ArchiveURL)
-        } catch let error {
-            print("Error by trying to delete favorite meals. Error: \(error.localizedDescription)")
-        }
-    }
-    
     //MARK: Private functions
     private func setUnsubscribeButton() {
         subscribeButton.setTitle("-", for: .normal)
