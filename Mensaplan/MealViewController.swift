@@ -42,8 +42,6 @@ class MealViewController: UIViewController {
     
     @IBAction func subscribe(_ sender: UIButton) {
         saveMealToFavorites()
-        let toast = Toast(controller: self, title: "", message: "Als Favorit gespeichert.")
-        toast.showToast()
     }
     
     //MARK: NSCoding
@@ -54,12 +52,15 @@ class MealViewController: UIViewController {
         var savedFavorites = NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
         if savedFavorites != nil {
             print("data saved. Number of meal data saved: \(savedFavorites!.count)")
-            savedFavorites!.append(meal!)
         } else {
             print("No data saved. Create new Meal Array to archive meal data.")
             savedFavorites = [Meal]()
-            savedFavorites!.append(meal!)
         }
+        // If Element is already saved as favorite return
+        if savedFavorites!.contains(where: {(data) in return data.name == self.meal!.name}) {
+            return
+        }
+        savedFavorites!.append(meal!)
         do {
             let data = try NSKeyedArchiver.archivedData(withRootObject: savedFavorites!, requiringSecureCoding: false)
             try data.write(to: Meal.ArchiveURL)
