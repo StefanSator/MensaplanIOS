@@ -8,28 +8,33 @@
 
 import UIKit
 
-class FavoritesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ChangedFavoritesDelegate {
+class FavoritesTableViewController: UITableViewController, ChangedFavoritesDelegate {
     //MARK: Properties
     var favoriteMeals = [Meal]()
     @IBOutlet weak var favoritesTableView: UITableView!
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        loadTableData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        favoritesTableView.dataSource = self
-        favoritesTableView.delegate = self
+        // Use of the edit button item provided by the table view controller
+        navigationItem.leftBarButtonItem = editButtonItem
         loadTableData()
     }
     
     //MARK: Table view data source
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favoriteMeals.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "MealTableViewCell"
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MealTableViewCell else {
             fatalError("Error in trying to downcast UITableViewCell to Type: MealTableViewCell.")
@@ -43,6 +48,24 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
         return cell
     }
     
+    // Override to support conditional editing of the table view.
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        // Return false if you do not want the specified item to be editable.
+        return true
+    }
+    
+    // Override to support editing the table view.
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            // Delete the row from the data source
+            favoriteMeals.remove(at: indexPath.row)
+            saveFavoriteMeals()
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        } else if editingStyle == .insert {
+            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+        }
+    }
+    
     //MARK: ChangedFavoritesDelegate
     func changesInFavorites(_ changes: Bool) {
         if changes == true {
@@ -51,7 +74,7 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     //MARK: Actions
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "showMealSegue", sender: self)
     }
     
@@ -77,6 +100,16 @@ class FavoritesViewController: UIViewController, UITableViewDataSource, UITableV
     //MARK: NSCoding
     private func loadFavoriteMeals() -> [Meal]? {
         return NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
+    }
+    
+    private func saveFavoriteMeals() {
+        do {
+            let data = try NSKeyedArchiver.archivedData(withRootObject: favoriteMeals, requiringSecureCoding: false)
+            try data.write(to: Meal.ArchiveURL)
+        } catch let error {
+            print("Error by trying to save meals as favorite of the user. Meals not saved! Error: \(error.localizedDescription)")
+        }
+        print("Meals saved as Favorites of the user.")
     }
     
     // Private Functions
