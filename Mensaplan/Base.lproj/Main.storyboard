@@ -143,6 +143,8 @@
                         <outlet property="mealImage" destination="pRc-d0-eu4" id="ukQ-Hs-bih"/>
                         <outlet property="mealName" destination="7D3-hy-oYJ" id="85P-zs-6pt"/>
                         <outlet property="studentPrize" destination="k1Z-Fe-Zm6" id="ZQA-FZ-6IE"/>
+                        <outlet property="subscribeButton" destination="tPk-TV-qVn" id="jB7-3k-6VV"/>
+                        <outlet property="subscribeLabel" destination="Qou-hZ-LR4" id="Rhv-M3-sEm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
