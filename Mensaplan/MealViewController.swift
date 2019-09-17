@@ -35,6 +35,45 @@ class MealViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func subscribe(_ sender: UIButton) {
+        saveMealToFavorites()
+        let toast = Toast(controller: self, title: "", message: "Als Favorit gespeichert.")
+        toast.showToast()
+    }
+    
+    //MARK: NSCoding
+    private func saveMealToFavorites() {
+        guard meal != nil else {
+            fatalError("No Meal defined for Archiving.")
+        }
+        var savedFavorites = NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
+        if savedFavorites != nil {
+            print("data saved. Number of meal data saved: \(savedFavorites!.count)")
+            savedFavorites!.append(meal!)
+        } else {
+            print("No data saved. Create new Meal Array to archive meal data.")
+            savedFavorites = [Meal]()
+            savedFavorites!.append(meal!)
+        }
+        do {
+            let data = try NSKeyedArchiver.archivedData(withRootObject: savedFavorites!, requiringSecureCoding: false)
+            try data.write(to: Meal.ArchiveURL)
+        } catch let error {
+            print("Error by trying to save meal object as favorite of the user. Meal Object not saved! Error: \(error.localizedDescription)")
+        }
+        print("Meal saved as Favorite of the user.")
+    }
+    
+    //Delete Persisted Meal Data
+    private func deleteArchivedFavoriteMeals() {
+        do {
+            let manager = FileManager.default
+            try manager.removeItem(at: Meal.ArchiveURL)
+        } catch let error {
+            print("Error by trying to delete favorite meals. Error: \(error.localizedDescription)")
+        }
+    }
+
 
 }
 
