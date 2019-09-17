@@ -249,6 +249,7 @@
                     <tabBarItem key="tabBarItem" systemItem="favorites" id="jos-Bu-pie"/>
                     <connections>
                         <outlet property="favoritesTableView" destination="nPm-0q-4DE" id="e36-Mr-Gw5"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="showMealSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="hqK-CX-0UV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TcD-E1-Fcl" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -367,4 +368,7 @@
     <resources>
         <image name="MealTab" width="25" height="25"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="hqK-CX-0UV"/>
+    </inferredMetricsTieBreakers>
 </document>
