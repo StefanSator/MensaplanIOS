@@ -48,7 +48,28 @@ class Meal : NSObject, NSCoding {
         setRightImage(category: category)
     }
     
-    init?(dictionary: NSDictionary) {
+    init?(dictionary: Dictionary<String, String>) {
+        guard let name = dictionary["name"],
+            let day = dictionary["tag"],
+            let category = dictionary["warengruppe"],
+            let studentCosts = dictionary["stud"],
+            let employeeCosts = dictionary["bed"],
+            let guestCosts = dictionary["gast"],
+            let studentPrice = Double(studentCosts.replacingOccurrences(of: ",", with: ".")),
+            let employeePrice = Double(employeeCosts.replacingOccurrences(of: ",", with: ".")),
+            let guestPrice = Double(guestCosts.replacingOccurrences(of: ",", with: "."))
+        else {
+                return nil
+        }
+        self.name = name
+        self.day = day
+        self.category = category
+        self.cost = (studentPrice, employeePrice, guestPrice)
+        super.init()
+        setRightImage(category: category)
+    }
+    
+    /* init?(dictionary: NSDictionary) {
         guard let name = dictionary["name"] as? String,
             let day = dictionary["day"] as? String,
             let category = dictionary["category"] as? String,
@@ -68,7 +89,7 @@ class Meal : NSObject, NSCoding {
         self.cost = (studentPrice, employeePrice, guestPrice)
         super.init()
         setRightImage(category: category)
-    }
+    } */
     
     //MARK: NSCoding
     // A protocol that enables an object to be encoded and decoded for archiving and distribution

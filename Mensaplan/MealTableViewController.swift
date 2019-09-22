@@ -7,10 +7,12 @@
 //
 
 import UIKit
+import Foundation
 
 class MealTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //MARK: Properties
     var meals = [Meal]()
+    var weekOfYear : Int?
     private var mealsDictionary = [ 0: [Meal](),
                             1: [Meal](),
                             2: [Meal](),
@@ -21,7 +23,9 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
         super.viewDidLoad()
         mealTableView.dataSource = self
         mealTableView.delegate = self
-        loadMealData(weekDay: "mo")
+        let calendar = NSCalendar.current
+        weekOfYear = calendar.component(.weekOfYear, from: Date())
+        loadMealData(weekDay: "Mo", weekOfYear: weekOfYear!)
     }
 
     //MARK: Table view data source
@@ -73,15 +77,15 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
         clearAllMealData()
         switch sender.selectedSegmentIndex {
         case 0:
-            loadMealData(weekDay: "mo")
+            loadMealData(weekDay: "Mo", weekOfYear: weekOfYear!)
         case 1:
-            loadMealData(weekDay: "di")
+            loadMealData(weekDay: "Di", weekOfYear: weekOfYear!)
         case 2:
-            loadMealData(weekDay: "mi")
+            loadMealData(weekDay: "Mi", weekOfYear: weekOfYear!)
         case 3:
-            loadMealData(weekDay: "do")
+            loadMealData(weekDay: "Do", weekOfYear: weekOfYear!)
         case 4:
-            loadMealData(weekDay: "fr")
+            loadMealData(weekDay: "Fr", weekOfYear: weekOfYear!)
         default:
             fatalError("The selected Index in UISegmentedControl doesn't exist.")
         }
@@ -109,11 +113,117 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     //MARK: Private Functions
-    private func loadMealData(weekDay: String) {
+    private func loadMealData(weekDay: String, weekOfYear: Int) {
+        let documentsUrl : URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first as URL?)!
+        let destinationFileUrl = documentsUrl.appendingPathComponent("meals.csv")
         // Set up the http request with URLSession
         let session = URLSession.shared
         // Check the Request URL
-        guard let url = URL(string: "https://regensburger-forscher.de:9001/mensa/uni/\(weekDay)") else {
+        guard let sourceUrl = URL(string: "https://www.stwno.de/infomax/daten-extern/csv/UNI-R/\(weekOfYear).csv") else {
+            fatalError("The URL could not be resolved.")
+        }
+        // Make the request with URLSessionDataTask
+        let task = session.downloadTask(with: sourceUrl, completionHandler: {
+            (tempLocalUrl, response, error) in
+            // Check for error on client side
+            guard error == nil else {
+                fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+            }
+            // Check for error on server side
+            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+                fatalError("An Error occured on server side, while executing REST Call.")
+            }
+            if let tempLocalUrl = tempLocalUrl {
+                do {
+                    if FileManager.default.fileExists(atPath: destinationFileUrl.path) {
+                        try FileManager.default.removeItem(at: destinationFileUrl)
+                        try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
+                    } else {
+                        try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
+                    }
+                } catch let writeError {
+                    print("Error creating a file \(destinationFileUrl) : \(writeError)")
+                }
+            } else {
+                fatalError("No Data was saved at temporary local URL.")
+            }
+            
+            do {
+                // Read the entire CSV-File into a String
+                let content = try String(contentsOfFile: destinationFileUrl.path,
+                                          encoding: String.Encoding(rawValue: String.Encoding.ascii.rawValue))
+                let lines = content.components(separatedBy: "\n")
+                let linesForSpecifiedDay = lines.filter {
+                    $0.contains(";\(weekDay);")
+                }
+                self.initializeMealDictionary(CSVLines: linesForSpecifiedDay, keys: lines[0].replacingOccurrences(of: "\r", with: "").components(separatedBy: ";"))
+            } catch let error {
+                print("Could not read content from CSV File. Error: \(error.localizedDescription)")
+            }
+            // Reload Table: UITask so i need to call reloadData() on Main-Thread
+            DispatchQueue.main.async {
+                self.mealTableView.reloadData()
+            }
+        })
+        // Start the Task
+        task.resume()
+    }
+    
+    private func clearAllMealData() {
+        mealsDictionary[0]!.removeAll()
+        mealsDictionary[1]!.removeAll()
+        mealsDictionary[2]!.removeAll()
+        mealsDictionary[3]!.removeAll()
+    }
+    
+    /* Initialize the variable mealsDictionary by passing a Array of CSV Lines as Strings */
+    private func initializeMealDictionary(CSVLines: [String], keys: [String]) {
+        for line in CSVLines {
+            let cleanLine = line.replacingOccurrences(of: "\r", with: "")
+            let dictionary = convertCSVToDictionary(csv: cleanLine, keys: keys)
+            guard let meal = Meal(dictionary: dictionary) else {
+                fatalError("An Error occurred while trying to create a Meal Object from a Dictionary created by CSV.");
+            }
+            if meal.category.hasPrefix("S") {
+                mealsDictionary[0]!.append(meal)
+            } else if meal.category.hasPrefix("HG") {
+                mealsDictionary[1]!.append(meal)
+            } else if meal.category.hasPrefix("B") {
+                mealsDictionary[2]!.append(meal)
+            } else if meal.category.hasPrefix("N") {
+                mealsDictionary[3]!.append(meal)
+            } else {
+                fatalError("The meal category doesn't exist.")
+            }
+        }
+    }
+    
+    /* Converts a line of the CSV File to a Dictionary */
+    private func convertCSVToDictionary(csv: String, keys: [String]) -> Dictionary<String, String> {
+        let values = csv.components(separatedBy: ";")
+        var dictionary = [String : String]()
+        for i in 0..<values.count {
+            dictionary[keys[i]] = values[i]
+        }
+        return dictionary
+    }
+    
+    //MARK: Deprecated Functions
+    /*
+     * These Functions where used for loading JSON converted Meal Data from Mensa API of regensburger-forscher.de.
+     * Unfortunately the Certificate of the Mensa API became invalid, so i can not retrieve data from the webservice anymore.
+     * App Transport Security (ATS) allows only secure connections over https to a webservice.
+     * Instead of retrieving Data from the Mensa API of regensburger-forscher.de, i retrieve my Meal Data now directly from the website
+     * of the Studentenwerk Niederbayern/Oberpfalz.
+     * The change of Service is the reason why these functions are deprecated and not used anymore.
+     */
+    
+    /*
+    private func loadMealData(weekDay: String, weekOfYear: Int) {
+        // Set up the http request with URLSession
+        let session = URLSession.shared
+        // Check the Request URL
+        guard let url = URL(string: "https://regensburger-forscher.de:9001/mensa/uni/\(weekDay.lowercased())") else {
             fatalError("The URL could not be resolved.")
         }
         // Make the request with URLSessionDataTask
@@ -142,21 +252,16 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
         // Start the Task
         task.resume()
     }
+    */
     
-    private func clearAllMealData() {
-        mealsDictionary[0]!.removeAll()
-        mealsDictionary[1]!.removeAll()
-        mealsDictionary[2]!.removeAll()
-        mealsDictionary[3]!.removeAll()
-    }
-    
-    private func initializeMealDictionary(withArray: NSArray) {
-        for object in withArray {
+    /* Initialize the variable mealsDictionary by passing the content as a JSON Array
+    private func initializeMealDictionary(JSONArray: NSArray) {
+        for object in JSONArray {
             guard let dictionary = object as? NSDictionary else {
                 fatalError("An Error occurred while converting Object to NSDictionary.")
             }
             guard let meal = Meal(dictionary: dictionary) else {
-                fatalError("An Error occurred while trying to create a Meal Object from a Dictionary.")
+                fatalError("An Error occurred while trying to create a Meal Object from a Dictionary created from a JSON Object.")
             }
             if meal.category.hasPrefix("S") {
                 mealsDictionary[0]!.append(meal)
@@ -171,5 +276,6 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
             }
         }
     }
-
+    */
+    
 }
