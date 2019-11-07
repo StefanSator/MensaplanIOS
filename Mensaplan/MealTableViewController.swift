@@ -25,7 +25,7 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
         mealTableView.delegate = self
         let calendar = NSCalendar.current
         weekOfYear = calendar.component(.weekOfYear, from: Date())
-        loadMealData(weekDay: "Mo", weekOfYear: weekOfYear!)
+        loadMealData(weekDayDE: "Mo", weekDayEN: "Mo", weekOfYear: weekOfYear!)
     }
 
     //MARK: Table view data source
@@ -77,15 +77,15 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
         clearAllMealData()
         switch sender.selectedSegmentIndex {
         case 0:
-            loadMealData(weekDay: "Mo", weekOfYear: weekOfYear!)
+            loadMealData(weekDayDE: "Mo", weekDayEN: "Mo", weekOfYear: weekOfYear!)
         case 1:
-            loadMealData(weekDay: "Di", weekOfYear: weekOfYear!)
+            loadMealData(weekDayDE: "Di", weekDayEN: "Tu", weekOfYear: weekOfYear!)
         case 2:
-            loadMealData(weekDay: "Mi", weekOfYear: weekOfYear!)
+            loadMealData(weekDayDE: "Mi", weekDayEN: "We", weekOfYear: weekOfYear!)
         case 3:
-            loadMealData(weekDay: "Do", weekOfYear: weekOfYear!)
+            loadMealData(weekDayDE: "Do", weekDayEN: "Th", weekOfYear: weekOfYear!)
         case 4:
-            loadMealData(weekDay: "Fr", weekOfYear: weekOfYear!)
+            loadMealData(weekDayDE: "Fr", weekDayEN: "Fr", weekOfYear: weekOfYear!)
         default:
             fatalError("The selected Index in UISegmentedControl doesn't exist.")
         }
@@ -113,14 +113,16 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
     }
     
     //MARK: Private Functions
-    private func loadMealData(weekDay: String, weekOfYear: Int) {
+    private func loadMealData(weekDayDE: String, weekDayEN: String, weekOfYear: Int) {
         let documentsUrl : URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first as URL?)!
         let destinationFileUrl = documentsUrl.appendingPathComponent("meals.csv")
         // Set up the http request with URLSession
         let session = URLSession.shared
         // Check the Request URL
-        guard let sourceUrl = URL(string: "https://www.stwno.de/infomax/daten-extern/csv/UNI-R/\(weekOfYear).csv") else {
-            fatalError("The URL could not be resolved.")
+        let urlString = "https://www.stwno.de/infomax/daten-extern/csv/UNI-R/\(weekOfYear).csv"
+        print("Starting REST Call to: \(urlString)")
+        guard let sourceUrl = URL(string: urlString) else {
+            fatalError("The URL could not be resolved: ")
         }
         // Make the request with URLSessionDataTask
         let task = session.downloadTask(with: sourceUrl, completionHandler: {
@@ -147,14 +149,14 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
             } else {
                 fatalError("No Data was saved at temporary local URL.")
             }
-            
+            print("Read File.")
             do {
                 // Read the entire CSV-File into a String
                 let content = try String(contentsOfFile: destinationFileUrl.path,
                                           encoding: String.Encoding(rawValue: String.Encoding.ascii.rawValue))
                 let lines = content.components(separatedBy: "\n")
                 let linesForSpecifiedDay = lines.filter {
-                    $0.contains(";\(weekDay);")
+                    $0.contains(";\(weekDayDE);") || $0.contains(";\(weekDayEN);")
                 }
                 self.initializeMealDictionary(CSVLines: linesForSpecifiedDay, keys: lines[0].replacingOccurrences(of: "\r", with: "").components(separatedBy: ";"))
             } catch let error {
