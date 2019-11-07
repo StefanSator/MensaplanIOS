@@ -11,6 +11,7 @@ import UIKit
 class LoginViewController: UIViewController {
     var backendURL: String = "https://young-beyond-20476.herokuapp.com/customers"
     @IBOutlet weak var loginButton: RoundedButton!
+    @IBOutlet weak var backButton: UIButton!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var password: UITextField!
     
@@ -18,6 +19,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
     }
     
+    // MARK: Actions
     @IBAction func loginButtonClicked(_ sender: UIButton) {
         // Set up the http request with URLSession
         let session = URLSession.shared
@@ -43,14 +45,14 @@ class LoginViewController: UIViewController {
                     print("Response: \(jsonResponse)")
                     DispatchQueue.main.async {
                         guard jsonResponse.count != 0 else {
-                            showAlertForIncorrectLogin(context: self)
+                            self.showAlertForIncorrectLogin(context: self)
                             return;
                         }
                         guard let userPassword = jsonResponse[0]["password"] as? String else {
                             fatalError("Could not read User Password from Server.")
                         }
                         if (userPassword != self.password.text) {
-                            showAlertForIncorrectLogin(context: self)
+                            self.showAlertForIncorrectLogin(context: self)
                             return;
                         } else {
                             print("Login correct.")
@@ -65,11 +67,17 @@ class LoginViewController: UIViewController {
         // Start the Task
         task.resume()
     }
-}
-
-private func showAlertForIncorrectLogin(context: LoginViewController) {
-    let alertController = UIAlertController(title: nil, message:
-        "Incorrect Login", preferredStyle: .alert)
-    alertController.addAction(UIAlertAction(title: "OK", style: .default))
-    context.present(alertController, animated: true)
+    
+    @IBAction func backButtonClicked(_ sender: UIButton) {
+        performSegue(withIdentifier: "loginBackSegue", sender: self)
+    }
+    
+    
+    // MARK: Private Functions
+    private func showAlertForIncorrectLogin(context: LoginViewController) {
+        let alertController = UIAlertController(title: nil, message:
+            "Incorrect Login", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .default))
+        context.present(alertController, animated: true)
+    }
 }

@@ -11,6 +11,7 @@
 		9EFB4865C7E1A48C9CF5F800 /* Pods_MensaplanTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3C866BE44F242A2D599C0783 /* Pods_MensaplanTests.framework */; };
 		EA0C6DAB2374202300B6219C /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DAA2374202300B6219C /* StartViewController.swift */; };
 		EA0C6DAD2374270500B6219C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DAC2374270500B6219C /* LoginViewController.swift */; };
+		EA0C6DAF2374938E00B6219C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */; };
 		EA6C6EA4232BDB0500B6DBCD /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */; };
 		EA6C6EA6232FB1A600B6DBCD /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */; };
 		EA8C80E32327D152008C572C /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E22327D152008C572C /* Meal.swift */; };
@@ -44,6 +45,7 @@
 		AEEEB80E84509CD39E149BB7 /* Pods-MensaplanTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MensaplanTests.release.xcconfig"; path = "Target Support Files/Pods-MensaplanTests/Pods-MensaplanTests.release.xcconfig"; sourceTree = "<group>"; };
 		EA0C6DAA2374202300B6219C /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartViewController.swift; sourceTree = "<group>"; };
 		EA0C6DAC2374270500B6219C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
 		EA8C80E22327D152008C572C /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				EAAFA3682327AE7400904EB3 /* AppDelegate.swift */,
 				EA0C6DAA2374202300B6219C /* StartViewController.swift */,
 				EA0C6DAC2374270500B6219C /* LoginViewController.swift */,
+				EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */,
 				EAAFA36A2327AE7400904EB3 /* MealViewController.swift */,
 				EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */,
 				EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */,
@@ -303,6 +306,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */,
+				EA0C6DAF2374938E00B6219C /* RegisterViewController.swift in Sources */,
 				EAACDE03232FCC0200376EC0 /* Toast.swift in Sources */,
 				EA6C6EA4232BDB0500B6DBCD /* RoundedButton.swift in Sources */,
 				EA6C6EA6232FB1A600B6DBCD /* FavoritesTableViewController.swift in Sources */,

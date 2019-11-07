@@ -9,9 +9,19 @@
 import UIKit
 
 class StartViewController: UIViewController {
-
+    @IBOutlet weak var loginButton: RoundedButton!
+    @IBOutlet weak var registerButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
+    
+    // MARK: Actions
+    @IBAction func loginButtonClicked(_ sender: UIButton) {
+        performSegue(withIdentifier: "loginSegue", sender: self)
+    }
+    
+    @IBAction func registerButtonClicked(_ sender: UIButton) {
+        performSegue(withIdentifier: "registerSegue", sender: self)
+    }
 }
