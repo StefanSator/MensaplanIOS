@@ -14,7 +14,6 @@ class MealTableViewCell: UITableViewCell {
     @IBOutlet weak var card: MDCCard!
     @IBOutlet weak var mealImage: UIImageView!
     @IBOutlet weak var mealNameLabel: UILabel!
-    @IBOutlet weak var mealPrizeLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

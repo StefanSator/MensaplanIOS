@@ -47,7 +47,6 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         let meal = mealsDictionary[indexPath.section]![indexPath.row]
         cell.mealImage.image = meal.image
         cell.mealNameLabel.text = meal.name
-        cell.mealPrizeLabel.text = "\(meal.cost.students), \(meal.cost.employees), \(meal.cost.guests)"
 
         return cell
     }
