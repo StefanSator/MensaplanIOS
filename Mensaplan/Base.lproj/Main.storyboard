@@ -552,6 +552,9 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                 <state key="normal" title="&lt; Zurück"/>
+                                <connections>
+                                    <action selector="backButtonClicked:" destination="Xqd-42-Iqh" eventType="touchUpInside" id="dbC-k2-I4X"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2hE-yY-aWB">
                                 <rect key="frame" x="32" y="279.66666666666663" width="350" height="336.66666666666663"/>
@@ -602,7 +605,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Passwort bestätigen:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="34B-nK-zdt">
                                         <rect key="frame" x="49.666666666666686" y="215" width="251" height="33.666666666666657"/>
@@ -618,7 +621,7 @@
                                         </constraints>
                                         <nil key="textColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NOs-YD-Tmh" customClass="RoundedButton" customModule="Mensaplan" customModuleProvider="target">
                                         <rect key="frame" x="100" y="286.66666666666669" width="150" height="50"/>
@@ -649,8 +652,13 @@
                         <viewLayoutGuide key="safeArea" id="sKw-4Z-SQi"/>
                     </view>
                     <connections>
+                        <outlet property="emailTextField" destination="KCc-HQ-l5b" id="AWt-lJ-mkX"/>
+                        <outlet property="passwordTextField1" destination="wGx-ut-KUd" id="6ta-wc-IOT"/>
+                        <outlet property="passwordTextField2" destination="aur-02-gG1" id="9fv-v7-jyd"/>
                         <outlet property="registerButton" destination="NOs-YD-Tmh" id="vZ4-nd-KYH"/>
+                        <outlet property="usernameTextField" destination="vOw-XO-GHn" id="Ba0-re-qZt"/>
                         <segue destination="Vxu-zV-yoc" kind="presentation" identifier="registerSuccessfulSegue" id="sZ5-Ke-OWf"/>
+                        <segue destination="sFe-mb-J95" kind="show" identifier="registerBackSegue" id="j2l-68-yDV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fAa-ho-lTk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -664,6 +672,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="sZ5-Ke-OWf"/>
+        <segue reference="k19-yQ-Qr1"/>
         <segue reference="7h1-dn-MUq"/>
     </inferredMetricsTieBreakers>
 </document>

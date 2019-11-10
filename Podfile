@@ -7,6 +7,7 @@ target 'Mensaplan' do
 
   # Pods for Mensaplan
   pod 'MaterialComponents/Cards'
+  pod 'ValidationComponents'
 
   target 'MensaplanTests' do
     inherit! :search_paths
