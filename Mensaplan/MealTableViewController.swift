@@ -8,8 +8,9 @@
 
 import UIKit
 import Foundation
+import MaterialComponents.MaterialCards
 
-class MealTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MealTableViewController: UIViewController, UITableViewDataSource {
     //MARK: Properties
     var meals = [Meal]()
     var weekOfYear : Int?
@@ -22,7 +23,7 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         mealTableView.dataSource = self
-        mealTableView.delegate = self
+        mealTableView.rowHeight = 200
         let calendar = NSCalendar.current
         weekOfYear = calendar.component(.weekOfYear, from: Date())
         loadMealData(weekDayDE: "Mo", weekDayEN: "Mo", weekOfYear: weekOfYear!)
@@ -68,11 +69,7 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
         return sectionTitle
     }
     
-    //MARK: Actions
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showMealSegue", sender: self)
-    }
-    
+    // MARK: Actions
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
         clearAllMealData()
         switch sender.selectedSegmentIndex {
@@ -89,6 +86,10 @@ class MealTableViewController: UIViewController, UITableViewDataSource, UITableV
         default:
             fatalError("The selected Index in UISegmentedControl doesn't exist.")
         }
+    }
+    
+    @IBAction func itemSelected(_ sender: MDCCard) {
+        performSegue(withIdentifier: "showMealSegue", sender: self)
     }
     
     //MARK: Navigation

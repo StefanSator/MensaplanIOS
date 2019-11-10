@@ -35,8 +35,8 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "MealTableViewCell"
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? MealTableViewCell else {
+        let cellIdentifier = "FavoritesTableViewCell"
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? FavoritesTableViewCell else {
             fatalError("Error in trying to downcast UITableViewCell to Type: MealTableViewCell.")
         }
         // Configure the cell
