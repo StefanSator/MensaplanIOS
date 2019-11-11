@@ -13,6 +13,7 @@
 		EA0C6DAD2374270500B6219C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DAC2374270500B6219C /* LoginViewController.swift */; };
 		EA0C6DAF2374938E00B6219C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */; };
 		EA0C6DB32378541C00B6219C /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */; };
+		EA0C6DB523796FF500B6219C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DB423796FF500B6219C /* AccountViewController.swift */; };
 		EA6C6EA4232BDB0500B6DBCD /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */; };
 		EA6C6EA6232FB1A600B6DBCD /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */; };
 		EA8C80E32327D152008C572C /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E22327D152008C572C /* Meal.swift */; };
@@ -48,6 +49,7 @@
 		EA0C6DAC2374270500B6219C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
+		EA0C6DB423796FF500B6219C /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
 		EA8C80E22327D152008C572C /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				EAACDE02232FCC0200376EC0 /* Toast.swift */,
 				EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */,
 				EA8C80E6232900F1008C572C /* MealTableViewController.swift */,
+				EA0C6DB423796FF500B6219C /* AccountViewController.swift */,
 				EAAFA36C2327AE7400904EB3 /* Main.storyboard */,
 				EAAFA36F2327AE7500904EB3 /* Assets.xcassets */,
 				EAAFA3712327AE7500904EB3 /* LaunchScreen.storyboard */,
@@ -328,6 +331,7 @@
 			files = (
 				EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */,
 				EA0C6DB32378541C00B6219C /* FavoritesTableViewCell.swift in Sources */,
+				EA0C6DB523796FF500B6219C /* AccountViewController.swift in Sources */,
 				EA0C6DAF2374938E00B6219C /* RegisterViewController.swift in Sources */,
 				EAACDE03232FCC0200376EC0 /* Toast.swift in Sources */,
 				EA6C6EA4232BDB0500B6DBCD /* RoundedButton.swift in Sources */,

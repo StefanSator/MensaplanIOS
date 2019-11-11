@@ -319,6 +319,7 @@
                     <connections>
                         <segue destination="hgn-9C-2Mv" kind="relationship" relationship="viewControllers" id="j6J-U1-teH"/>
                         <segue destination="ggH-fM-J6L" kind="relationship" relationship="viewControllers" id="oIE-zI-WU3"/>
+                        <segue destination="w0D-hZ-HCy" kind="relationship" relationship="viewControllers" id="z51-f3-Lsz"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kkl-Gw-Ir1" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -536,6 +537,54 @@
             </objects>
             <point key="canvasLocation" x="-1723.1884057971015" y="440.625"/>
         </scene>
+        <!--Account-->
+        <scene sceneID="1Ve-YW-gq5">
+            <objects>
+                <viewController id="w0D-hZ-HCy" customClass="AccountViewController" customModule="Mensaplan" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sCY-Ia-DJV">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RGe-FU-6OV" customClass="RoundedButton" customModule="Mensaplan" customModuleProvider="target">
+                                <rect key="frame" x="117" y="408" width="180" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="180" id="OiC-An-mEU"/>
+                                    <constraint firstAttribute="height" constant="80" id="UCB-gt-KV3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="48"/>
+                                <state key="normal" title="Logout"/>
+                                <connections>
+                                    <action selector="logoutButtonClicked:" destination="w0D-hZ-HCy" eventType="touchUpInside" id="eXh-ID-yYf"/>
+                                </connections>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OTHLogo" translatesAutoresizingMaskIntoConstraints="NO" id="fav-a6-gji">
+                                <rect key="frame" x="57" y="159" width="300" height="150"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="Mgx-ll-PAH"/>
+                                    <constraint firstAttribute="height" constant="150" id="akb-q2-gnc"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fav-a6-gji" firstAttribute="centerX" secondItem="sCY-Ia-DJV" secondAttribute="centerX" id="5qJ-cI-DFx"/>
+                            <constraint firstItem="fav-a6-gji" firstAttribute="top" secondItem="bsN-VZ-dLa" secondAttribute="top" constant="115" id="GCh-wx-7KH"/>
+                            <constraint firstItem="RGe-FU-6OV" firstAttribute="centerX" secondItem="sCY-Ia-DJV" secondAttribute="centerX" id="afT-i3-3He"/>
+                            <constraint firstItem="RGe-FU-6OV" firstAttribute="centerY" secondItem="sCY-Ia-DJV" secondAttribute="centerY" id="vdc-0f-8wM"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="bsN-VZ-dLa"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Account" image="Account" id="DSc-Dd-mqo"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="logoutButton" destination="RGe-FU-6OV" id="4s9-gr-Tds"/>
+                        <segue destination="sFe-mb-J95" kind="show" identifier="logoutSegue" id="227-Rh-CLz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gVc-xo-68e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3707" y="-1058"/>
+        </scene>
         <!--Register View Controller-->
         <scene sceneID="XBf-El-uyU">
             <objects>
@@ -667,12 +716,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Account" width="25" height="25"/>
         <image name="MealTab" width="25" height="25"/>
         <image name="OTHLogo" width="786.5" height="393.5"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="sZ5-Ke-OWf"/>
-        <segue reference="k19-yQ-Qr1"/>
+        <segue reference="227-Rh-CLz"/>
         <segue reference="7h1-dn-MUq"/>
     </inferredMetricsTieBreakers>
 </document>
