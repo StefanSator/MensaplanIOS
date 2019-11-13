@@ -139,6 +139,17 @@ class RegisterViewController: UIViewController {
                 guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
                     fatalError("An Error occured on server side, while executing REST Call.")
                 }
+                do {
+                    if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                        guard let sessionToken = jsonResponse["customerid"] as? Int else {
+                            fatalError("Unknown Session Token.")
+                        }
+                        UserSession.setSessionToken(sessionToken)
+                        print(UserSession.getSessionToken())
+                    }
+                } catch {
+                    fatalError("Failed to retrieve Session Token from Server.");
+                }
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "registerSuccessfulSegue", sender: self)
                 }
@@ -148,6 +159,35 @@ class RegisterViewController: UIViewController {
             fatalError(error.localizedDescription)
         }
     }
+    
+/* // Parse json response data to Dictionary
+ do {
+ if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
+ print("Response: \(jsonResponse)")
+ DispatchQueue.main.async {
+ guard jsonResponse.count != 0 else {
+ self.showAlertForIncorrectLogin(context: self)
+ return;
+ }
+ guard let userPassword = jsonResponse[0]["password"] as? String else {
+ fatalError("Could not read User Password from Server.")
+ }
+ guard let sessionToken = jsonResponse[0]["customerid"] as? Int else {
+ fatalError("Could not retrieve Token for current Session.")
+ }
+ if (userPassword != self.password.text) {
+ self.showAlertForIncorrectLogin(context: self)
+ return;
+ } else {
+ print("Login correct.")
+ UserSession.setSessionToken(sessionToken)
+ self.performSegue(withIdentifier: "loginSuccessfulSegue", sender: self)
+ }
+ }
+ }
+ } catch let error {
+ fatalError("Failed to load: \(error.localizedDescription)")
+ } */
     
     private func showAlert(message: String, context: RegisterViewController) {
         let alertController = UIAlertController(title: nil, message:

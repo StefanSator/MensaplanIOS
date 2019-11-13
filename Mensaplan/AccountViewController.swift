@@ -17,6 +17,7 @@ class AccountViewController: UIViewController {
     
     //MARK: Actions
     @IBAction func logoutButtonClicked(_ sender: UIButton) {
+        UserSession.endSession()
         performSegue(withIdentifier: "logoutSegue", sender: self)
     }
     

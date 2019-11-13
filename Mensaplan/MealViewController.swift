@@ -17,15 +17,15 @@ class MealViewController: UIViewController {
     var delegate : ChangedFavoritesDelegate?
     var meal : Meal?
     var savedFavorites : [Meal]?
-    var subscribedToMeal : Bool = false
+    var likesMeal : Bool?
     @IBOutlet weak var mealImage: UIImageView!
     @IBOutlet weak var mealName: UILabel!
     @IBOutlet weak var studentPrize: UILabel!
     @IBOutlet weak var guestPrize: UILabel!
     @IBOutlet weak var employeePrize: UILabel!
     @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var subscribeButton: UIButton!
-    @IBOutlet weak var subscribeLabel: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var dislikeButton: UIButton!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -41,12 +41,14 @@ class MealViewController: UIViewController {
         studentPrize.text = "Studenten:  \(meal!.cost.students) €"
         guestPrize.text = "Gäste:  \(meal!.cost.guests) €"
         employeePrize.text = "Angestellte:  \(meal!.cost.employees) €"
-        // If meal is a favorite of the user, change Subscribe Button to Unsubscribe Button
+        // If meal is a Like of the user, change Like Button Color to Blue
         loadMealFavorites()
         if savedFavorites!.contains(where: {(data) in return data.name == self.meal!.name}) {
-            setUnsubscribeButton()
+            highlightLikeDislikeButtons(like: true, dislike: false)
+            likesMeal = true
         } else {
-            setSubscribeButton()
+            highlightLikeDislikeButtons(like: false, dislike: true)
+            likesMeal = false
         }
     }
     
@@ -55,17 +57,23 @@ class MealViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func subscribe(_ sender: UIButton) {
-        if subscribedToMeal == false {
+    @IBAction func like(_ sender: UIButton) {
+        if likesMeal == false {
             saveMealToFavorites()
-            let toast = Toast(controller: self, title: "", message: "Als Favorit hinzugefügt.")
+            let toast = Toast(controller: self, title: "", message: "I Like!")
             toast.showToast()
-            setUnsubscribeButton()
-        } else {
+            highlightLikeDislikeButtons(like: true, dislike: false)
+            likesMeal = true
+        }
+    }
+    
+    @IBAction func dislike(_ sender: UIButton) {
+        if likesMeal == true {
             deleteMealFromFavorites()
-            let toast = Toast(controller: self, title: "", message: "Als Favorit entfernt.")
+            let toast = Toast(controller: self, title: "", message: "I Dislike.")
             toast.showToast()
-            setSubscribeButton()
+            highlightLikeDislikeButtons(like: false, dislike: true)
+            likesMeal = false
         }
     }
     
@@ -116,17 +124,17 @@ class MealViewController: UIViewController {
         }
     }
     
-    //MARK: Private functions
-    private func setUnsubscribeButton() {
-        subscribeButton.setTitle("-", for: .normal)
-        subscribeLabel.text = "Als Favorit entfernen"
-        subscribedToMeal = true
-    }
-    
-    private func setSubscribeButton() {
-        subscribeButton.setTitle("+", for: .normal)
-        subscribeLabel.text = "Als Favorit hinzufügen"
-        subscribedToMeal = false
+    private func highlightLikeDislikeButtons(like: Bool, dislike: Bool) {
+        if like == true {
+            likeButton.setTitleColor(.blue, for: .normal)
+        } else {
+            likeButton.setTitleColor(.gray, for: .normal)
+        }
+        if dislike == true {
+            dislikeButton.setTitleColor(.red, for: .normal)
+        } else {
+            dislikeButton.setTitleColor(.gray, for: .normal)
+        }
     }
 
 }

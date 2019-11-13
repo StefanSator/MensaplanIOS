@@ -51,11 +51,15 @@ class LoginViewController: UIViewController {
                         guard let userPassword = jsonResponse[0]["password"] as? String else {
                             fatalError("Could not read User Password from Server.")
                         }
+                        guard let sessionToken = jsonResponse[0]["customerid"] as? Int else {
+                            fatalError("Could not retrieve Token for current Session.")
+                        }
                         if (userPassword != self.password.text) {
                             self.showAlertForIncorrectLogin(context: self)
                             return;
                         } else {
                             print("Login correct.")
+                            UserSession.setSessionToken(sessionToken)
                             self.performSegue(withIdentifier: "loginSuccessfulSegue", sender: self)
                         }
                     }
