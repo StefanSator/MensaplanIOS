@@ -11,6 +11,7 @@ import UIKit
 
 class Meal : NSObject, NSCoding {
     //MARK: Properties
+    let id: Int
     let name: String
     let day: String
     let category: String
@@ -29,6 +30,7 @@ class Meal : NSObject, NSCoding {
     
     //MARK:Types
     struct PropertyKey {
+        static let id = "id"
         static let name = "name"
         static let day = "day"
         static let category = "category"
@@ -39,7 +41,8 @@ class Meal : NSObject, NSCoding {
     }
     
     //MARK: Initialization
-    init(name: String, day: String, category: String, studentPrice: Double, employeePrice: Double, guestPrice: Double) {
+    init(id: Int, name: String, day: String, category: String, studentPrice: Double, employeePrice: Double, guestPrice: Double) {
+        self.id = id
         self.name = name
         self.day = day
         self.category = category
@@ -48,7 +51,27 @@ class Meal : NSObject, NSCoding {
         setRightImage(category: category)
     }
     
-    init?(dictionary: Dictionary<String, String>) {
+    init?(dictionary: NSDictionary) {
+        guard let id = dictionary["mealid"] as? Int,
+            let name = dictionary["mealname"] as? String,
+            let day = dictionary["weekday"] as? String,
+            let category = dictionary["category"] as? String,
+            let studentPrice = Double(dictionary["studentprice"] as! String),
+            let employeePrice = Double(dictionary["employeeprice"] as! String),
+            let guestPrice = Double(dictionary["guestprice"] as! String)
+        else {
+            return nil;
+        }
+        self.id = id;
+        self.name = name;
+        self.day = day;
+        self.category = category;
+        self.cost = (studentPrice, employeePrice, guestPrice)
+        super.init()
+        setRightImage(category: category)
+    }
+    
+    /* init?(dictionary: Dictionary<String, String>) {
         guard let name = dictionary["name"],
             let day = dictionary["tag"],
             let category = dictionary["warengruppe"],
@@ -67,7 +90,7 @@ class Meal : NSObject, NSCoding {
         self.cost = (studentPrice, employeePrice, guestPrice)
         super.init()
         setRightImage(category: category)
-    }
+    } */
     
     /* init?(dictionary: NSDictionary) {
         guard let name = dictionary["name"] as? String,
@@ -94,6 +117,7 @@ class Meal : NSObject, NSCoding {
     //MARK: NSCoding
     // A protocol that enables an object to be encoded and decoded for archiving and distribution
     func encode(with aCoder: NSCoder) {
+        aCoder.encode(id, forKey: PropertyKey.id)
         aCoder.encode(name, forKey: PropertyKey.name)
         aCoder.encode(day, forKey: PropertyKey.day)
         aCoder.encode(category, forKey: PropertyKey.category)
@@ -104,6 +128,7 @@ class Meal : NSObject, NSCoding {
     
     /* Initializing the object by decoding the local saved data with NSCoder */
     required convenience init?(coder aDecoder: NSCoder) {
+        let id = aDecoder.decodeInteger(forKey: PropertyKey.id)
         guard let name = aDecoder.decodeObject(forKey: PropertyKey.name) as? String else {
             fatalError("Unable to decode the name property which is required for a Meal Object.")
         }
@@ -117,7 +142,7 @@ class Meal : NSObject, NSCoding {
         let employeeCosts = aDecoder.decodeDouble(forKey: PropertyKey.employeeCosts)
         let guestCosts = aDecoder.decodeDouble(forKey: PropertyKey.guestCosts)
         
-        self.init(name: name, day: day, category: category, studentPrice: studentCosts, employeePrice: employeeCosts, guestPrice: guestCosts)
+        self.init(id: id, name: name, day: day, category: category, studentPrice: studentCosts, employeePrice: employeeCosts, guestPrice: guestCosts)
     }
     
     //MARK: Private Functions

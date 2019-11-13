@@ -12,8 +12,9 @@ import MaterialComponents.MaterialCards
 
 class MealTableViewController: UIViewController, UITableViewDataSource {
     //MARK: Properties
+    var backendUrl = "https://young-beyond-20476.herokuapp.com/meals"
     var meals = [Meal]()
-    var weekOfYear : Int?
+    var calendar = NSCalendar.current
     private var mealsDictionary = [ 0: [Meal](),
                             1: [Meal](),
                             2: [Meal](),
@@ -24,9 +25,8 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
         mealTableView.dataSource = self
         mealTableView.rowHeight = 200
-        let calendar = NSCalendar.current
-        weekOfYear = calendar.component(.weekOfYear, from: Date())
-        loadMealData(weekDayDE: "Mo", weekDayEN: "Mo", weekOfYear: weekOfYear!)
+        //weekOfYear = calendar.component(.weekOfYear, from: Date())
+        loadMealData(weekDay: "Mo")
     }
 
     //MARK: Table view data source
@@ -73,15 +73,15 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         clearAllMealData()
         switch sender.selectedSegmentIndex {
         case 0:
-            loadMealData(weekDayDE: "Mo", weekDayEN: "Mo", weekOfYear: weekOfYear!)
+            loadMealData(weekDay: "Mo")
         case 1:
-            loadMealData(weekDayDE: "Di", weekDayEN: "Tu", weekOfYear: weekOfYear!)
+            loadMealData(weekDay: "Tu")
         case 2:
-            loadMealData(weekDayDE: "Mi", weekDayEN: "We", weekOfYear: weekOfYear!)
+            loadMealData(weekDay: "We")
         case 3:
-            loadMealData(weekDayDE: "Do", weekDayEN: "Th", weekOfYear: weekOfYear!)
+            loadMealData(weekDay: "Th")
         case 4:
-            loadMealData(weekDayDE: "Fr", weekDayEN: "Fr", weekOfYear: weekOfYear!)
+            loadMealData(weekDay: "Fr")
         default:
             fatalError("The selected Index in UISegmentedControl doesn't exist.")
         }
@@ -113,61 +113,34 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
     }
     
     //MARK: Private Functions
-    private func loadMealData(weekDayDE: String, weekDayEN: String, weekOfYear: Int) {
-        let documentsUrl : URL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first as URL?)!
-        let destinationFileUrl = documentsUrl.appendingPathComponent("meals.csv")
-        // Set up the http request with URLSession
+    private func loadMealData(weekDay: String) {
         let session = URLSession.shared
-        // Check the Request URL
-        let urlString = "https://www.stwno.de/infomax/daten-extern/csv/UNI-R/\(weekOfYear).csv"
-        print("Starting REST Call to: \(urlString)")
-        guard let sourceUrl = URL(string: urlString) else {
-            fatalError("The URL could not be resolved: ")
+        let calendarWeek = calendar.component(.weekOfYear, from: Date())
+        let year = calendar.component(.year, from: Date())
+        guard let url = URL(string: backendUrl + "?weekDay='\(weekDay)'&calendarWeek=\(calendarWeek)&year=\(year)") else {
+            fatalError("The URL could not be resolved.")
         }
-        // Make the request with URLSessionDataTask
-        let task = session.downloadTask(with: sourceUrl, completionHandler: {
-            (tempLocalUrl, response, error) in
-            // Check for error on client side
+        let task = session.dataTask(with: url, completionHandler: {
+            (data, response, error) in
             guard error == nil else {
-                fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+                fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
             }
-            // Check for error on server side
             guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                fatalError("An Error occured on server side, while executing REST Call.")
+                fatalError("An Error occurred on server side, while executing REST Call.")
             }
-            if let tempLocalUrl = tempLocalUrl {
-                do {
-                    if FileManager.default.fileExists(atPath: destinationFileUrl.path) {
-                        try FileManager.default.removeItem(at: destinationFileUrl)
-                        try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                    } else {
-                        try FileManager.default.copyItem(at: tempLocalUrl, to: destinationFileUrl)
-                    }
-                } catch let writeError {
-                    print("Error creating a file \(destinationFileUrl) : \(writeError)")
-                }
-            } else {
-                fatalError("No Data was saved at temporary local URL.")
-            }
-            print("Read File.")
             do {
-                // Read the entire CSV-File into a String
-                let content = try String(contentsOfFile: destinationFileUrl.path,
-                                          encoding: String.Encoding(rawValue: String.Encoding.ascii.rawValue))
-                let lines = content.components(separatedBy: "\n")
-                let linesForSpecifiedDay = lines.filter {
-                    $0.contains(";\(weekDayDE);") || $0.contains(";\(weekDayEN);")
+                if let jsonArray = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
+                    print("Response: \(jsonArray)")
+                    self.initializeMealDictionary(jsonArray: jsonArray)
                 }
-                self.initializeMealDictionary(CSVLines: linesForSpecifiedDay, keys: lines[0].replacingOccurrences(of: "\r", with: "").components(separatedBy: ";"))
             } catch let error {
-                print("Could not read content from CSV File. Error: \(error.localizedDescription)")
+                fatalError("Error: \(error.localizedDescription)")
             }
-            // Reload Table: UITask so i need to call reloadData() on Main-Thread
+            // Reload Meal Table in Main-Thread
             DispatchQueue.main.async {
                 self.mealTableView.reloadData()
             }
         })
-        // Start the Task
         task.resume()
     }
     
@@ -178,13 +151,11 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         mealsDictionary[3]!.removeAll()
     }
     
-    /* Initialize the variable mealsDictionary by passing a Array of CSV Lines as Strings */
-    private func initializeMealDictionary(CSVLines: [String], keys: [String]) {
-        for line in CSVLines {
-            let cleanLine = line.replacingOccurrences(of: "\r", with: "")
-            let dictionary = convertCSVToDictionary(csv: cleanLine, keys: keys)
-            guard let meal = Meal(dictionary: dictionary) else {
-                fatalError("An Error occurred while trying to create a Meal Object from a Dictionary created by CSV.");
+    /* Initialize the mealsDictionary by passing a JSON-Array */
+    private func initializeMealDictionary(jsonArray: [NSDictionary]) {
+        for jsonObject in jsonArray {
+            guard let meal = Meal(dictionary: jsonObject) else {
+                fatalError("An Error occurred while trying to create a Meal Object from a JSON-Object.");
             }
             if meal.category.hasPrefix("S") {
                 mealsDictionary[0]!.append(meal)
@@ -198,16 +169,6 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
                 fatalError("The meal category doesn't exist.")
             }
         }
-    }
-    
-    /* Converts a line of the CSV File to a Dictionary */
-    private func convertCSVToDictionary(csv: String, keys: [String]) -> Dictionary<String, String> {
-        let values = csv.components(separatedBy: ";")
-        var dictionary = [String : String]()
-        for i in 0..<values.count {
-            dictionary[keys[i]] = values[i]
-        }
-        return dictionary
     }
     
     //MARK: Deprecated Functions
