@@ -20,6 +20,7 @@
 		EA8C80E52328FBB1008C572C /* MealTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */; };
 		EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E6232900F1008C572C /* MealTableViewController.swift */; };
 		EA93515D237C518B005BC96C /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA93515C237C518B005BC96C /* UserSession.swift */; };
+		EA93515F237D63FE005BC96C /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA93515E237D63FE005BC96C /* NetworkingManager.swift */; };
 		EAACDE03232FCC0200376EC0 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACDE02232FCC0200376EC0 /* Toast.swift */; };
 		EAAFA3692327AE7400904EB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAFA3682327AE7400904EB3 /* AppDelegate.swift */; };
 		EAAFA36B2327AE7400904EB3 /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAFA36A2327AE7400904EB3 /* MealViewController.swift */; };
@@ -57,6 +58,7 @@
 		EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTableViewCell.swift; sourceTree = "<group>"; };
 		EA8C80E6232900F1008C572C /* MealTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTableViewController.swift; sourceTree = "<group>"; };
 		EA93515C237C518B005BC96C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		EA93515E237D63FE005BC96C /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		EAACDE02232FCC0200376EC0 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EAAFA3652327AE7400904EB3 /* Mensaplan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mensaplan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAFA3682327AE7400904EB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -147,6 +149,7 @@
 				EA8C80E6232900F1008C572C /* MealTableViewController.swift */,
 				EA0C6DB423796FF500B6219C /* AccountViewController.swift */,
 				EA93515C237C518B005BC96C /* UserSession.swift */,
+				EA93515E237D63FE005BC96C /* NetworkingManager.swift */,
 				EAAFA36C2327AE7400904EB3 /* Main.storyboard */,
 				EAAFA36F2327AE7500904EB3 /* Assets.xcassets */,
 				EAAFA3712327AE7500904EB3 /* LaunchScreen.storyboard */,
@@ -335,6 +338,7 @@
 				EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */,
 				EA0C6DB32378541C00B6219C /* FavoritesTableViewCell.swift in Sources */,
 				EA0C6DB523796FF500B6219C /* AccountViewController.swift in Sources */,
+				EA93515F237D63FE005BC96C /* NetworkingManager.swift in Sources */,
 				EA93515D237C518B005BC96C /* UserSession.swift in Sources */,
 				EA0C6DAF2374938E00B6219C /* RegisterViewController.swift in Sources */,
 				EAACDE03232FCC0200376EC0 /* Toast.swift in Sources */,

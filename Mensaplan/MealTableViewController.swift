@@ -12,7 +12,7 @@ import MaterialComponents.MaterialCards
 
 class MealTableViewController: UIViewController, UITableViewDataSource {
     //MARK: Properties
-    var backendUrl = "https://young-beyond-20476.herokuapp.com/meals"
+    let backendUrl = "https://young-beyond-20476.herokuapp.com/meals"
     var meals = [Meal]()
     var calendar = NSCalendar.current
     private var mealsDictionary = [ 0: [Meal](),
@@ -113,35 +113,32 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
     }
     
     //MARK: Private Functions
+    /* Starts GET-Request to the Backend to get Meal Data */
     private func loadMealData(weekDay: String) {
-        let session = URLSession.shared
         let calendarWeek = calendar.component(.weekOfYear, from: Date())
         let year = calendar.component(.year, from: Date())
-        guard let url = URL(string: backendUrl + "?weekDay='\(weekDay)'&calendarWeek=\(calendarWeek)&year=\(year)") else {
-            fatalError("The URL could not be resolved.")
+        NetworkingManager.shared.GETRequestToBackend(route: "/meals", queryParams: "?weekDay='\(weekDay)'&calendarWeek=\(calendarWeek)&year=\(year)", completionHandler: loadMealDataHandler)
+    }
+    
+    private func loadMealDataHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        guard error == nil else {
+            fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
         }
-        let task = session.dataTask(with: url, completionHandler: {
-            (data, response, error) in
-            guard error == nil else {
-                fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occurred on server side, while executing REST Call.")
+        }
+        do {
+            if let jsonArray = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
+                print("Response: \(jsonArray)")
+                self.initializeMealDictionary(jsonArray: jsonArray)
             }
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                fatalError("An Error occurred on server side, while executing REST Call.")
-            }
-            do {
-                if let jsonArray = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
-                    print("Response: \(jsonArray)")
-                    self.initializeMealDictionary(jsonArray: jsonArray)
-                }
-            } catch let error {
-                fatalError("Error: \(error.localizedDescription)")
-            }
-            // Reload Meal Table in Main-Thread
-            DispatchQueue.main.async {
-                self.mealTableView.reloadData()
-            }
-        })
-        task.resume()
+        } catch let error {
+            fatalError("Error: \(error.localizedDescription)")
+        }
+        // Reload Meal Table in Main-Thread
+        DispatchQueue.main.async {
+            self.mealTableView.reloadData()
+        }
     }
     
     private func clearAllMealData() {
@@ -170,75 +167,5 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
             }
         }
     }
-    
-    //MARK: Deprecated Functions
-    /*
-     * These Functions where used for loading JSON converted Meal Data from Mensa API of regensburger-forscher.de.
-     * Unfortunately the Certificate of the Mensa API became invalid, so i can not retrieve data from the webservice anymore.
-     * App Transport Security (ATS) allows only secure connections over https to a webservice.
-     * Instead of retrieving Data from the Mensa API of regensburger-forscher.de, i retrieve my Meal Data now directly from the website
-     * of the Studentenwerk Niederbayern/Oberpfalz.
-     * The change of Service is the reason why these functions are deprecated and not used anymore.
-     */
-    
-    /*
-    private func loadMealData(weekDay: String, weekOfYear: Int) {
-        // Set up the http request with URLSession
-        let session = URLSession.shared
-        // Check the Request URL
-        guard let url = URL(string: "https://regensburger-forscher.de:9001/mensa/uni/\(weekDay.lowercased())") else {
-            fatalError("The URL could not be resolved.")
-        }
-        // Make the request with URLSessionDataTask
-        let task = session.dataTask(with: url, completionHandler: {
-            (data, response, error) in
-            // Check for error on client side
-            guard error == nil else {
-                fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
-            }
-            // Check for error on server side
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                fatalError("An Error occured on server side, while executing REST Call.")
-            }
-            // Parse response data to JSON
-            do {
-                let mealArray = try JSONSerialization.jsonObject(with: data!, options: []) as! NSArray
-                self.initializeMealDictionary(withArray: mealArray)
-            } catch let error {
-                fatalError("JSON error: \(error.localizedDescription)")
-            }
-            // Reload Table: UITask so i need to call reloadData() on Main-Thread
-            DispatchQueue.main.async {
-                self.mealTableView.reloadData()
-            }
-        })
-        // Start the Task
-        task.resume()
-    }
-    */
-    
-    /* Initialize the variable mealsDictionary by passing the content as a JSON Array
-    private func initializeMealDictionary(JSONArray: NSArray) {
-        for object in JSONArray {
-            guard let dictionary = object as? NSDictionary else {
-                fatalError("An Error occurred while converting Object to NSDictionary.")
-            }
-            guard let meal = Meal(dictionary: dictionary) else {
-                fatalError("An Error occurred while trying to create a Meal Object from a Dictionary created from a JSON Object.")
-            }
-            if meal.category.hasPrefix("S") {
-                mealsDictionary[0]!.append(meal)
-            } else if meal.category.hasPrefix("HG") {
-                mealsDictionary[1]!.append(meal)
-            } else if meal.category.hasPrefix("B") {
-                mealsDictionary[2]!.append(meal)
-            } else if meal.category.hasPrefix("N") {
-                mealsDictionary[3]!.append(meal)
-            } else {
-                fatalError("The meal category doesn't exist.")
-            }
-        }
-    }
-    */
     
 }

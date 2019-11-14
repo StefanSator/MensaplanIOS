@@ -16,8 +16,10 @@ class MealViewController: UIViewController {
     //MARK: Properties
     var delegate : ChangedFavoritesDelegate?
     var meal : Meal?
-    var savedFavorites : [Meal]?
-    var likesMeal : Bool?
+    let likeRoute = "/likes"
+    let likeSituationRoute = "/userlikes"
+    //var savedFavorites : [Meal]?
+    //var likesMeal : Bool?
     @IBOutlet weak var mealImage: UIImageView!
     @IBOutlet weak var mealName: UILabel!
     @IBOutlet weak var studentPrize: UILabel!
@@ -41,15 +43,16 @@ class MealViewController: UIViewController {
         studentPrize.text = "Studenten:  \(meal!.cost.students) €"
         guestPrize.text = "Gäste:  \(meal!.cost.guests) €"
         employeePrize.text = "Angestellte:  \(meal!.cost.employees) €"
-        // If meal is a Like of the user, change Like Button Color to Blue
-        loadMealFavorites()
-        if savedFavorites!.contains(where: {(data) in return data.name == self.meal!.name}) {
+        // If meal is a Like of the user, change Like Button Color to Blue or if it is a dislike the Dislike Button to red
+        checkLikeDislikeSituation()
+        //loadMealFavorites()
+        /* if savedFavorites!.contains(where: {(data) in return data.name == self.meal!.name}) {
             highlightLikeDislikeButtons(like: true, dislike: false)
             likesMeal = true
         } else {
             highlightLikeDislikeButtons(like: false, dislike: true)
             likesMeal = false
-        }
+        } */
     }
     
     //MARK: Actions
@@ -58,27 +61,69 @@ class MealViewController: UIViewController {
     }
     
     @IBAction func like(_ sender: UIButton) {
-        if likesMeal == false {
-            saveMealToFavorites()
+        /* if likesMeal == false {
+            //saveMealToFavorites()
             let toast = Toast(controller: self, title: "", message: "I Like!")
             toast.showToast()
             highlightLikeDislikeButtons(like: true, dislike: false)
             likesMeal = true
-        }
+        } else {
+            highlightLikeDislikeButtons(like: false, dislike: false)
+            likesMeal = false
+        } */
     }
     
     @IBAction func dislike(_ sender: UIButton) {
-        if likesMeal == true {
-            deleteMealFromFavorites()
+        /* if likesMeal == true {
+            //deleteMealFromFavorites()
             let toast = Toast(controller: self, title: "", message: "I Dislike.")
             toast.showToast()
             highlightLikeDislikeButtons(like: false, dislike: true)
             likesMeal = false
+        } else {
+            highlightLikeDislikeButtons(like: false, dislike: false)
+            likesMeal = true
+        } */
+    }
+    
+    //MARK: Private Functions
+    /* Starts Backend GET-Request to check if user likes, dislikes or is neutral to the displayed Meal */
+    private func checkLikeDislikeSituation() {
+        NetworkingManager.shared.GETRequestToBackend(route: "/meals/\(likeSituationRoute)", queryParams: "?mealid=\(meal!.id)&userid=\(UserSession.getSessionToken())", completionHandler: likeDislikeSituationHandler)
+    }
+    
+    /* Completion Handler for Backend GET-Request for Like-/Dislike Situation of User regarding the displayed Meal */
+    private func likeDislikeSituationHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        guard error == nil else {
+            fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occurred on server side, while executing REST Call.")
+        }
+        do {
+            if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                print("Response: \(jsonObject)")
+            }
+        } catch let error {
+            fatalError("Error: \(error.localizedDescription)")
+        }
+    }
+    
+    private func highlightLikeDislikeButtons(like: Bool, dislike: Bool) {
+        if like == true {
+            likeButton.setTitleColor(.blue, for: .normal)
+        } else {
+            likeButton.setTitleColor(.gray, for: .normal)
+        }
+        if dislike == true {
+            dislikeButton.setTitleColor(.red, for: .normal)
+        } else {
+            dislikeButton.setTitleColor(.gray, for: .normal)
         }
     }
     
     //MARK: NSCoding
-    private func loadMealFavorites() {
+    /* private func loadMealFavorites() {
         savedFavorites = NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
         if savedFavorites != nil {
             print("data saved. Number of meal data saved: \(savedFavorites!.count)")
@@ -122,19 +167,6 @@ class MealViewController: UIViewController {
         } else {
             print("Meal Item could not be found in saved Favorites of the user.")
         }
-    }
-    
-    private func highlightLikeDislikeButtons(like: Bool, dislike: Bool) {
-        if like == true {
-            likeButton.setTitleColor(.blue, for: .normal)
-        } else {
-            likeButton.setTitleColor(.gray, for: .normal)
-        }
-        if dislike == true {
-            dislikeButton.setTitleColor(.red, for: .normal)
-        } else {
-            dislikeButton.setTitleColor(.gray, for: .normal)
-        }
-    }
+    } */
 
 }

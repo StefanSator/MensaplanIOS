@@ -10,7 +10,7 @@ import UIKit
 import ValidationComponents
 
 class RegisterViewController: UIViewController {
-    var backendURL: String = "https://young-beyond-20476.herokuapp.com/customers"
+    let backendURL: String = "https://young-beyond-20476.herokuapp.com/customers"
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField1: UITextField!
@@ -41,7 +41,7 @@ class RegisterViewController: UIViewController {
         if (!checkPasswords()) {
             return
         }
-        registerUser()
+        checkIfUserIsAvailable()
     }
     
     private func checkEmail() -> Bool {
@@ -77,117 +77,70 @@ class RegisterViewController: UIViewController {
         return true
     }
     
-    private func registerUser() {
-        checkIfUserIsAvailable()
-        //performSegue(withIdentifier: "registerSuccessfulSegue", sender: self)
-    }
-    
+    /* Checks if User is already in System */
     private func checkIfUserIsAvailable() {
-        let session = URLSession.shared
-        guard let url = URL(string: backendURL + "?email=\(emailTextField.text ?? "")") else {
-            fatalError("The URL could not be resolved.")
-        }
-        let task = session.dataTask(with: url, completionHandler: {
-            (data, response, error) in
-            // Check for error on client side
-            guard error == nil else {
-                fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
-            }
-            // Check for error on server side
-            guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                fatalError("An Error occured on server side, while executing REST Call.")
-            }
-            // Parse json response data to Dictionary
-            do {
-                if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
-                    DispatchQueue.main.async {
-                        guard jsonResponse.count == 0 else {
-                            self.showAlert(message: "User already available in System.", context: self)
-                            return;
-                        }
-                        self.startRegistrationProcess()
-                    }
-                }
-            } catch let error {
-                fatalError("Failed to load: \(error.localizedDescription)")
-            }
-        })
-        // Start the Task
-        task.resume()
+        NetworkingManager.shared.GETRequestToBackend(route: "/customers", queryParams: "?email=\(emailTextField.text ?? "")", completionHandler: checkIfUserIsAvailableHandler)
     }
     
-    private func startRegistrationProcess() {
-        let session = URLSession.shared
-        let url = URL(string: backendURL)!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    /* Register User in Backend */
+    private func registerUser() {
         let user = [
             "username": usernameTextField.text,
             "password": passwordTextField1.text,
             "email": emailTextField.text
         ]
+        NetworkingManager.shared.POSTRequestToBackend(route: "/customers", body: user as! [String : String], completionHandler: registrationProcessHandler)
+    }
+    
+    private func checkIfUserIsAvailableHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        // Check for error on client side
+        guard error == nil else {
+            fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        // Check for error on server side
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occured on server side, while executing REST Call.")
+        }
+        // Parse json response data to Dictionary
         do {
-            let json = try JSONSerialization.data(withJSONObject: user, options: [])
-            let task = session.uploadTask(with: request, from: json) {
-                (data, response, error) in
-                // Check for error on client side
-                guard error == nil else {
-                    fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
-                }
-                // Check for error on server side
-                guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-                    fatalError("An Error occured on server side, while executing REST Call.")
-                }
-                do {
-                    if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-                        guard let sessionToken = jsonResponse["customerid"] as? Int else {
-                            fatalError("Unknown Session Token.")
-                        }
-                        UserSession.setSessionToken(sessionToken)
-                        print(UserSession.getSessionToken())
-                    }
-                } catch {
-                    fatalError("Failed to retrieve Session Token from Server.");
-                }
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "registerSuccessfulSegue", sender: self)
+                    guard jsonResponse.count == 0 else {
+                        self.showAlert(message: "User already available in System.", context: self)
+                        return;
+                    }
+                    self.registerUser()
                 }
             }
-            task.resume()
         } catch let error {
-            fatalError(error.localizedDescription)
+            fatalError("Failed to load: \(error.localizedDescription)")
         }
     }
     
-/* // Parse json response data to Dictionary
- do {
- if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
- print("Response: \(jsonResponse)")
- DispatchQueue.main.async {
- guard jsonResponse.count != 0 else {
- self.showAlertForIncorrectLogin(context: self)
- return;
- }
- guard let userPassword = jsonResponse[0]["password"] as? String else {
- fatalError("Could not read User Password from Server.")
- }
- guard let sessionToken = jsonResponse[0]["customerid"] as? Int else {
- fatalError("Could not retrieve Token for current Session.")
- }
- if (userPassword != self.password.text) {
- self.showAlertForIncorrectLogin(context: self)
- return;
- } else {
- print("Login correct.")
- UserSession.setSessionToken(sessionToken)
- self.performSegue(withIdentifier: "loginSuccessfulSegue", sender: self)
- }
- }
- }
- } catch let error {
- fatalError("Failed to load: \(error.localizedDescription)")
- } */
+    private func registrationProcessHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        // Check for error on client side
+        guard error == nil else {
+            fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        // Check for error on server side
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occured on server side, while executing REST Call.")
+        }
+        do {
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                guard let sessionToken = jsonResponse["customerid"] as? Int else {
+                    fatalError("Unknown Session Token.")
+                }
+                UserSession.setSessionToken(sessionToken)
+                print(UserSession.getSessionToken())
+            }
+        } catch {
+            fatalError("Failed to retrieve Session Token from Server.");
+        }
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: "registerSuccessfulSegue", sender: self)
+        }
+    }
     
     private func showAlert(message: String, context: RegisterViewController) {
         let alertController = UIAlertController(title: nil, message:
