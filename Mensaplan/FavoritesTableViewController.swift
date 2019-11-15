@@ -8,15 +8,17 @@
 
 import UIKit
 
-class FavoritesTableViewController: UITableViewController, ChangedFavoritesDelegate {
+class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDelegate {
     //MARK: Properties
     var favoriteMeals = [Meal]()
+    var likes = [Int]()
+    var dislikes = [Int]()
     @IBOutlet weak var favoritesTableView: UITableView!
     
-    override func viewWillAppear(_ animated: Bool) {
+    /* override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadTableData()
-    }
+    } */
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +39,7 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellIdentifier = "FavoritesTableViewCell"
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? FavoritesTableViewCell else {
-            fatalError("Error in trying to downcast UITableViewCell to Type: MealTableViewCell.")
+            fatalError("Error in trying to downcast UITableViewCell to Type: FavoritesTableViewCell.")
         }
         // Configure the cell
         let meal = favoriteMeals[indexPath.row]
@@ -59,15 +61,15 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
         if editingStyle == .delete {
             // Delete the row from the data source
             favoriteMeals.remove(at: indexPath.row)
-            saveFavoriteMeals()
+            // TODO: DELETE-Request to Backend
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
     
-    //MARK: ChangedFavoritesDelegate
-    func changesInFavorites(_ changes: Bool) {
+    //MARK: ChangesLikeDislikeDelegate
+    func changesInLikesDislikes(_ changes: Bool) {
         if changes == true {
             loadTableData()
         }
@@ -79,9 +81,9 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
     }
     
     @IBAction func deletaAllFavoriteMeals(_ sender: UIBarButtonItem) {
-        deleteArchivedFavoriteMeals()
-        favoriteMeals = [Meal]()
-        favoritesTableView.reloadData()
+        // TODO: DELETE-Request for Deletion of all meals which user liked or disliked
+        //favoriteMeals = [Meal]()
+        //favoritesTableView.reloadData()
     }
     
     
@@ -98,12 +100,64 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
             }
             let selectedMeal = favoriteMeals[indexPath.row]
             mealViewController.meal = selectedMeal
-            mealViewController.delegate = self
+            mealViewController.delegate2 = self
         default:
             fatalError("Segue Identifier unknown: \(String(describing: segue.identifier))")
         }
     }
     
+    //MARK: Private Functions
+    /* Starts GET-Request to Backend to get all meals the user either liked or disliked */
+    private func loadTableData() {
+        NetworkingManager.shared.GETRequestToBackend(route: "/meals/userlikes", queryParams: "?userid=\(UserSession.getSessionToken())", completionHandler: loadTableDataHandler)
+    }
+    
+    private func loadTableDataHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        guard error == nil else {
+            fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occurred on server side, while executing REST Call.")
+        }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? [String: Any] {
+                self.initializeMealArray(json: json)
+            }
+        } catch let error {
+            fatalError("Error: \(error.localizedDescription)")
+        }
+        // Reload Meal Table in Main-Thread
+        DispatchQueue.main.async {
+            self.favoritesTableView.reloadData()
+        }
+    }
+    
+    private func initializeMealArray(json: [String: Any]) {
+        if let jsonMeals = json["meals"] as? [NSDictionary] {
+            for jsonMeal in jsonMeals {
+                guard let meal = Meal(dictionary: jsonMeal) else {
+                    fatalError("An Error occurred while trying to create a Meal Object from a JSON-Object.");
+                }
+                favoriteMeals.append(meal)
+            }
+        }
+        if let jsonLikes = json["likes"] as? [NSDictionary] {
+            for jsonLike in jsonLikes {
+                if let mealId = jsonLike["mealid"] as? Int {
+                    likes.append(mealId)
+                }
+            }
+        }
+        if let jsonDislikes = json["dislikes"] as? [NSDictionary] {
+            for jsonDislike in jsonDislikes {
+                if let mealId = jsonDislike["mealid"] as? Int {
+                    dislikes.append(mealId)
+                }
+            }
+        }
+    }
+    
+    /*
     //MARK: NSCoding
     private func loadFavoriteMeals() -> [Meal]? {
         return NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
@@ -137,6 +191,6 @@ class FavoritesTableViewController: UITableViewController, ChangedFavoritesDeleg
             favoriteMeals = savedFavoriteMeals!
             favoritesTableView.reloadData()
         }
-    }
+    } */
 
 }
