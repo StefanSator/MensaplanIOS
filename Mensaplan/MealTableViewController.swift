@@ -10,9 +10,8 @@ import UIKit
 import Foundation
 import MaterialComponents.MaterialCards
 
-class MealTableViewController: UIViewController, UITableViewDataSource {
+class MealTableViewController: UIViewController, UITableViewDataSource, ChangesLikeDislikeDelegate {
     //MARK: Properties
-    let backendUrl = "https://young-beyond-20476.herokuapp.com/meals"
     var meals = [Meal]()
     var calendar = NSCalendar.current
     private var mealsDictionary = [ 0: [Meal](),
@@ -20,13 +19,13 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
                             2: [Meal](),
                             3: [Meal]()]
     @IBOutlet weak var mealTableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         mealTableView.dataSource = self
         mealTableView.rowHeight = 200
-        //weekOfYear = calendar.component(.weekOfYear, from: Date())
-        loadMealData(weekDay: "Mo")
+        loadMealDataDependingOnSelectedIndex(segmentedControl: segmentedControl)
     }
 
     //MARK: Table view data source
@@ -70,23 +69,16 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         return sectionTitle
     }
     
+    //MARK: ChangesLikeDislikeDelegate
+    func changesInLikesDislikes(_ changes: Bool) {
+        if (changes == true) {
+            loadMealDataDependingOnSelectedIndex(segmentedControl: segmentedControl)
+        }
+    }
+    
     // MARK: Actions
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
-        clearAllMealData()
-        switch sender.selectedSegmentIndex {
-        case 0:
-            loadMealData(weekDay: "Mo")
-        case 1:
-            loadMealData(weekDay: "Tu")
-        case 2:
-            loadMealData(weekDay: "We")
-        case 3:
-            loadMealData(weekDay: "Th")
-        case 4:
-            loadMealData(weekDay: "Fr")
-        default:
-            fatalError("The selected Index in UISegmentedControl doesn't exist.")
-        }
+        loadMealDataDependingOnSelectedIndex(segmentedControl: sender)
     }
     
     @IBAction func itemSelected(_ sender: MDCCard) {
@@ -109,6 +101,7 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
             }
             let selectedMeal = meals[indexPath.row]
             mealViewController.meal = selectedMeal
+            mealViewController.delegate2 = self
         default:
             fatalError("Segue Identifier unknown: \(String(describing: segue.identifier))")
         }
@@ -167,6 +160,25 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
             } else {
                 fatalError("The meal category doesn't exist.")
             }
+        }
+    }
+    
+    /* Loads the right Meal Data depending on which index in UISegmentedControl is selected */
+    private func loadMealDataDependingOnSelectedIndex(segmentedControl: UISegmentedControl) {
+        clearAllMealData()
+        switch segmentedControl.selectedSegmentIndex {
+        case 0:
+            loadMealData(weekDay: "Mo")
+        case 1:
+            loadMealData(weekDay: "Tu")
+        case 2:
+            loadMealData(weekDay: "We")
+        case 3:
+            loadMealData(weekDay: "Th")
+        case 4:
+            loadMealData(weekDay: "Fr")
+        default:
+            fatalError("The selected Index in UISegmentedControl doesn't exist.")
         }
     }
     

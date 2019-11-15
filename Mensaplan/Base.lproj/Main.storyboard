@@ -589,6 +589,7 @@
                     <tabBarItem key="tabBarItem" title="Gerichte" image="MealTab" landscapeImage="MealTab" id="dlr-is-3QZ"/>
                     <connections>
                         <outlet property="mealTableView" destination="JVJ-Gh-Y7R" id="bRW-Td-u81"/>
+                        <outlet property="segmentedControl" destination="wuc-4v-8QN" id="8v2-uM-I4I"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RoS-LU-uaM" userLabel="First Responder" sceneMemberID="firstResponder"/>

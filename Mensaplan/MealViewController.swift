@@ -12,9 +12,14 @@ protocol ChangedFavoritesDelegate {
     func changesInFavorites(_ changes: Bool)
 }
 
+protocol ChangesLikeDislikeDelegate {
+    func changesInLikesDislikes(_ changes: Bool)
+}
+
 class MealViewController: UIViewController {
     //MARK: Properties
     var delegate : ChangedFavoritesDelegate?
+    var delegate2 : ChangesLikeDislikeDelegate?
     var meal : Meal?
     let likeRoute = "/likes"
     var likeState = LikeStates.neutral;
@@ -108,6 +113,7 @@ class MealViewController: UIViewController {
             // Update Like State
             updateLikeState(type: 1)
         }
+        delegate2?.changesInLikesDislikes(true)
         /* if likesMeal == false {
             //saveMealToFavorites()
             let toast = Toast(controller: self, title: "", message: "I Like!")
@@ -158,6 +164,7 @@ class MealViewController: UIViewController {
             // Update Like State
             updateLikeState(type: -1)
         }
+        delegate2?.changesInLikesDislikes(true)
         /* if likesMeal == true {
             //deleteMealFromFavorites()
             let toast = Toast(controller: self, title: "", message: "I Dislike.")
