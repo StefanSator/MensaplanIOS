@@ -111,11 +111,6 @@
                                                 <state key="normal" title="×">
                                                     <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="customBackgroundColor">
-                                                        <color key="value" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="dislike:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6S3-5M-QFJ"/>
                                                 </connections>
@@ -172,9 +167,11 @@
                     <connections>
                         <outlet property="cancelButton" destination="Ga8-cb-fpe" id="2SC-ms-UpM"/>
                         <outlet property="dislikeButton" destination="pQv-NS-lFb" id="y89-LR-gP0"/>
+                        <outlet property="dislikeCountLabel" destination="5Sz-GT-igl" id="40A-La-mAH"/>
                         <outlet property="employeePrize" destination="7PN-mD-Qpf" id="wdK-ey-gtC"/>
                         <outlet property="guestPrize" destination="VYF-MS-zsK" id="17M-r3-LaX"/>
                         <outlet property="likeButton" destination="tPk-TV-qVn" id="2il-gx-lf3"/>
+                        <outlet property="likeCountLabel" destination="CPq-dG-qMr" id="20V-WS-INz"/>
                         <outlet property="mealImage" destination="pRc-d0-eu4" id="ukQ-Hs-bih"/>
                         <outlet property="mealName" destination="7D3-hy-oYJ" id="85P-zs-6pt"/>
                         <outlet property="studentPrize" destination="k1Z-Fe-Zm6" id="ZQA-FZ-6IE"/>

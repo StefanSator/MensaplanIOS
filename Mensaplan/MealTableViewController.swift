@@ -120,6 +120,7 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         NetworkingManager.shared.GETRequestToBackend(route: "/meals", queryParams: "?weekDay='\(weekDay)'&calendarWeek=\(calendarWeek)&year=\(year)", completionHandler: loadMealDataHandler)
     }
     
+    /* Handles the functional Logic after GET-Request completed */
     private func loadMealDataHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -129,7 +130,6 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         }
         do {
             if let jsonArray = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
-                print("Response: \(jsonArray)")
                 self.initializeMealDictionary(jsonArray: jsonArray)
             }
         } catch let error {

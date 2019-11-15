@@ -17,7 +17,7 @@ class MealViewController: UIViewController {
     var delegate : ChangedFavoritesDelegate?
     var meal : Meal?
     let likeRoute = "/likes"
-    let likeSituationRoute = "/userlikes"
+    var likeState = LikeStates.neutral;
     //var savedFavorites : [Meal]?
     //var likesMeal : Bool?
     @IBOutlet weak var mealImage: UIImageView!
@@ -28,6 +28,15 @@ class MealViewController: UIViewController {
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dislikeButton: UIButton!
+    @IBOutlet weak var likeCountLabel: UILabel!
+    @IBOutlet weak var dislikeCountLabel: UILabel!
+    
+    //MARK: Types
+    struct LikeStates {
+        static let like = "like"
+        static let dislike = "dislike"
+        static let neutral = "neutral"
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -43,8 +52,9 @@ class MealViewController: UIViewController {
         studentPrize.text = "Studenten:  \(meal!.cost.students) €"
         guestPrize.text = "Gäste:  \(meal!.cost.guests) €"
         employeePrize.text = "Angestellte:  \(meal!.cost.employees) €"
-        // If meal is a Like of the user, change Like Button Color to Blue or if it is a dislike the Dislike Button to red
-        checkLikeDislikeSituation()
+        // If meal is a Like of the user, highlight Like Button or if it is a dislike highlight the Dislike Button
+        // and set number of likes and dislikes
+        getLikeDislikeState()
         //loadMealFavorites()
         /* if savedFavorites!.contains(where: {(data) in return data.name == self.meal!.name}) {
             highlightLikeDislikeButtons(like: true, dislike: false)
@@ -61,6 +71,43 @@ class MealViewController: UIViewController {
     }
     
     @IBAction func like(_ sender: UIButton) {
+        if (likeState == LikeStates.like) {
+            // Delete Like from DB
+            deleteLikeDislikeInDB()
+            // Remove highlighting of Like Button
+            highlightLikeDislikeButtons(like: false, dislike: false)
+            // Decrement Like Count by 1
+            if let text = likeCountLabel.text, let count = Int(text) {
+                likeCountLabel.text = String(count - 1)
+            }
+            // Update Like State
+            updateLikeState(type: 0)
+        } else if (likeState == LikeStates.dislike) {
+            // Update Like in DB
+            insertOrUpdateLikeDislikeInDB(type: 1)
+            // Highlight Like Button, while removing highlighting of Dislike Button
+            highlightLikeDislikeButtons(like: true, dislike: false)
+            // Increment Like Count by 1, while decrementing Dislike Count by 1
+            if let text = likeCountLabel.text, let count = Int(text) {
+                likeCountLabel.text = String(count + 1)
+            }
+            if let text = dislikeCountLabel.text, let count = Int(text) {
+                dislikeCountLabel.text = String(count - 1)
+            }
+            // Update Like State
+            updateLikeState(type: 1)
+        } else {
+            // Insert Like in DB
+            insertOrUpdateLikeDislikeInDB(type: 1)
+            // Highlight Like Button
+            highlightLikeDislikeButtons(like: true, dislike: false)
+            // Increment Like Count by 1
+            if let text = likeCountLabel.text, let count = Int(text) {
+                likeCountLabel.text = String(count + 1)
+            }
+            // Update Like State
+            updateLikeState(type: 1)
+        }
         /* if likesMeal == false {
             //saveMealToFavorites()
             let toast = Toast(controller: self, title: "", message: "I Like!")
@@ -74,6 +121,43 @@ class MealViewController: UIViewController {
     }
     
     @IBAction func dislike(_ sender: UIButton) {
+        if (likeState == LikeStates.dislike) {
+            // Delete Like from DB
+            deleteLikeDislikeInDB()
+            // Remove highlighting of Dislike Button
+            highlightLikeDislikeButtons(like: false, dislike: false)
+            // Decrement Dislike Count by 1
+            if let text = dislikeCountLabel.text, let count = Int(text) {
+                dislikeCountLabel.text = String(count - 1)
+            }
+            // Update Like State
+            updateLikeState(type: 0)
+        } else if (likeState == LikeStates.like) {
+            // Update Like in DB
+            insertOrUpdateLikeDislikeInDB(type: -1)
+            // Highlight Dislike Button, while removing highlighting of Like Button
+            highlightLikeDislikeButtons(like: false, dislike: true)
+            // Increment Dislike Count by 1, while decrementing Like Count by 1
+            if let text = dislikeCountLabel.text, let count = Int(text) {
+                dislikeCountLabel.text = String(count + 1)
+            }
+            if let text = likeCountLabel.text, let count = Int(text) {
+                likeCountLabel.text = String(count - 1)
+            }
+            // Update Like State
+            updateLikeState(type: -1)
+        } else {
+            // Insert Dislike in DB
+            insertOrUpdateLikeDislikeInDB(type: -1)
+            // Highlight Dislike Button
+            highlightLikeDislikeButtons(like: false, dislike: true)
+            // Increment Dislike Count by 1
+            if let text = dislikeCountLabel.text, let count = Int(text) {
+                dislikeCountLabel.text = String(count + 1)
+            }
+            // Update Like State
+            updateLikeState(type: -1)
+        }
         /* if likesMeal == true {
             //deleteMealFromFavorites()
             let toast = Toast(controller: self, title: "", message: "I Dislike.")
@@ -87,13 +171,70 @@ class MealViewController: UIViewController {
     }
     
     //MARK: Private Functions
-    /* Starts Backend GET-Request to check if user likes, dislikes or is neutral to the displayed Meal */
-    private func checkLikeDislikeSituation() {
-        NetworkingManager.shared.GETRequestToBackend(route: "/meals/\(likeSituationRoute)", queryParams: "?mealid=\(meal!.id)&userid=\(UserSession.getSessionToken())", completionHandler: likeDislikeSituationHandler)
+    /* Starts Backend DELETE-Request to delete likes or dislikes from DB */
+    private func deleteLikeDislikeInDB() {
+        let like = [
+            "userId": UserSession.getSessionToken(),
+            "mealId": meal!.id
+        ]
+        NetworkingManager.shared.DELETERequestToBackend(route: "/meals\(likeRoute)", body: like, completionHandler: deleteLikeDislikeHandler)
     }
     
-    /* Completion Handler for Backend GET-Request for Like-/Dislike Situation of User regarding the displayed Meal */
-    private func likeDislikeSituationHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+    /* Completion Handler for Backend DELETE-Request for deleting likes and dislikes */
+    private func deleteLikeDislikeHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        // Check for error on client side
+        guard error == nil else {
+            fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        // Check for error on server side
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occured on server side, while executing REST Call.")
+        }
+        do {
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                print(jsonResponse)
+            }
+        } catch {
+            fatalError("Failed to retrieve JSON Response from Backend");
+        }
+    }
+    
+    /* Starts Backend POST-Request to update or insert like, dislike in DB */
+    private func insertOrUpdateLikeDislikeInDB(type: Int) {
+        let like = [
+            "userId": UserSession.getSessionToken(),
+            "mealId": meal!.id,
+            "type": type
+        ]
+        NetworkingManager.shared.POSTRequestToBackend(route: "/meals\(likeRoute)", body: like, completionHandler: insertOrUpdateLikeDislikeHandler)
+    }
+    
+    /* Completion Handler for Backend POST-Request for updating or inserting Likes and Dislikes of a sepecified Meal */
+    private func insertOrUpdateLikeDislikeHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        // Check for error on client side
+        guard error == nil else {
+            fatalError("An Error occured on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        // Check for error on server side
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occured on server side, while executing REST Call.")
+        }
+        do {
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                print(jsonResponse)
+            }
+        } catch {
+            fatalError("Failed to retrieve JSON Response from Backend");
+        }
+    }
+    
+    /* Starts Backend GET-Request to check if user likes, dislikes or is neutral to the displayed Meal */
+    private func getLikeDislikeState() {
+        NetworkingManager.shared.GETRequestToBackend(route: "/meals\(likeRoute)", queryParams: "?mealid=\(meal!.id)&userid=\(UserSession.getSessionToken())", completionHandler: likeDislikeStateHandler)
+    }
+    
+    /* Completion Handler for Backend GET-Request for Like-/Dislike State of User regarding the displayed Meal */
+    private func likeDislikeStateHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
         }
@@ -101,14 +242,44 @@ class MealViewController: UIViewController {
             fatalError("An Error occurred on server side, while executing REST Call.")
         }
         do {
-            if let jsonObject = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
-                print("Response: \(jsonObject)")
+            if let state = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                DispatchQueue.main.async {
+                    self.updateAndShowLikeDislikes(state: state);
+                }
+            } else {
+                fatalError("JSON Serialization went wrong.")
             }
         } catch let error {
             fatalError("Error: \(error.localizedDescription)")
         }
     }
     
+    /* Change Button Colors specific to the Like-State of the user regarding this meal and set Number of Likes and Dislikes */
+    private func updateAndShowLikeDislikes(state: NSDictionary) {
+        guard let dislikes = state["dislikes"] as? String,
+            let likes = state["likes"] as? String,
+            let status = state["state"] as? Int
+        else {
+            fatalError("Type Casting Error in function updateAndShowLikeDislikes()")
+        }
+        // Show the number of likes and dislikes in total of the meal
+        likeCountLabel.text = likes
+        dislikeCountLabel.text = dislikes
+        // Check if user has liked / disliked the meal or nothing of both
+        switch (status) {
+            case 1:
+                likeState = LikeStates.like
+                highlightLikeDislikeButtons(like: true, dislike: false)
+            case -1:
+                likeState = LikeStates.dislike
+                highlightLikeDislikeButtons(like: false, dislike: true)
+            default:
+                likeState = LikeStates.neutral
+                highlightLikeDislikeButtons(like: false, dislike: false)
+        }
+    }
+    
+    /* Higlight the Buttons depending on if User has liked / disliked the Meal or nothing of both */
     private func highlightLikeDislikeButtons(like: Bool, dislike: Bool) {
         if like == true {
             likeButton.setTitleColor(.blue, for: .normal)
@@ -119,6 +290,18 @@ class MealViewController: UIViewController {
             dislikeButton.setTitleColor(.red, for: .normal)
         } else {
             dislikeButton.setTitleColor(.gray, for: .normal)
+        }
+    }
+    
+    /* Update the Like State for a given Like type: 0: neutral, 1: like, -1: dislike */
+    private func updateLikeState(type: Int) {
+        switch type {
+        case 1:
+            likeState = LikeStates.like
+        case -1:
+            likeState = LikeStates.dislike
+        default:
+            likeState = LikeStates.neutral
         }
     }
     
