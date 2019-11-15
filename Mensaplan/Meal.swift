@@ -16,6 +16,8 @@ class Meal : NSObject, NSCoding {
     let day: String
     let category: String
     var cost: (students: Double, employees: Double, guests: Double)
+    let likes: Int
+    let dislikes: Int
     var image: UIImage?
     override public var description: String {
         return "Meal: \(name), Day: \(day), Category: \(category), studentPrize: \(cost.students), employeePrize: \(cost.employees), guestPrize: \(cost.guests)"
@@ -38,15 +40,19 @@ class Meal : NSObject, NSCoding {
         static let employeeCosts = "employeecosts"
         static let guestCosts = "guestcosts"
         static let image = "image"
+        static let likes = "likes"
+        static let dislikes = "dislikes"
     }
     
     //MARK: Initialization
-    init(id: Int, name: String, day: String, category: String, studentPrice: Double, employeePrice: Double, guestPrice: Double) {
+    init(id: Int, name: String, day: String, category: String, studentPrice: Double, employeePrice: Double, guestPrice: Double, likes: Int, dislikes: Int) {
         self.id = id
         self.name = name
         self.day = day
         self.category = category
         self.cost = (studentPrice, employeePrice, guestPrice)
+        self.likes = likes
+        self.dislikes = dislikes
         super.init()
         setRightImage(category: category)
     }
@@ -58,7 +64,9 @@ class Meal : NSObject, NSCoding {
             let category = dictionary["category"] as? String,
             let studentPrice = Double(dictionary["studentprice"] as! String),
             let employeePrice = Double(dictionary["employeeprice"] as! String),
-            let guestPrice = Double(dictionary["guestprice"] as! String)
+            let guestPrice = Double(dictionary["guestprice"] as! String),
+            let likes = Int(dictionary["likes"] as! String),
+            let dislikes = Int(dictionary["dislikes"] as! String)
         else {
             return nil;
         }
@@ -67,6 +75,8 @@ class Meal : NSObject, NSCoding {
         self.day = day;
         self.category = category;
         self.cost = (studentPrice, employeePrice, guestPrice)
+        self.likes = likes
+        self.dislikes = dislikes
         super.init()
         setRightImage(category: category)
     }
@@ -124,6 +134,8 @@ class Meal : NSObject, NSCoding {
         aCoder.encode(cost.students, forKey: PropertyKey.studentCosts)
         aCoder.encode(cost.employees, forKey: PropertyKey.employeeCosts)
         aCoder.encode(cost.guests, forKey: PropertyKey.guestCosts)
+        aCoder.encode(likes, forKey: PropertyKey.likes)
+        aCoder.encode(dislikes, forKey: PropertyKey.dislikes)
     }
     
     /* Initializing the object by decoding the local saved data with NSCoder */
@@ -141,8 +153,10 @@ class Meal : NSObject, NSCoding {
         let studentCosts = aDecoder.decodeDouble(forKey: PropertyKey.studentCosts)
         let employeeCosts = aDecoder.decodeDouble(forKey: PropertyKey.employeeCosts)
         let guestCosts = aDecoder.decodeDouble(forKey: PropertyKey.guestCosts)
+        let likes = aDecoder.decodeInteger(forKey: PropertyKey.likes)
+        let dislikes = aDecoder.decodeInteger(forKey: PropertyKey.dislikes)
         
-        self.init(id: id, name: name, day: day, category: category, studentPrice: studentCosts, employeePrice: employeeCosts, guestPrice: guestCosts)
+        self.init(id: id, name: name, day: day, category: category, studentPrice: studentCosts, employeePrice: employeeCosts, guestPrice: guestCosts, likes: likes, dislikes: dislikes)
     }
     
     //MARK: Private Functions

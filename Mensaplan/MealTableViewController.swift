@@ -47,6 +47,8 @@ class MealTableViewController: UIViewController, UITableViewDataSource {
         let meal = mealsDictionary[indexPath.section]![indexPath.row]
         cell.mealImage.image = meal.image
         cell.mealNameLabel.text = meal.name
+        cell.likeNumberLabel.text = "\(meal.likes)"
+        cell.dislikeNumberLabel.text = "\(meal.dislikes)"
 
         return cell
     }
