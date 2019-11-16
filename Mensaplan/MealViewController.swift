@@ -200,6 +200,7 @@ class MealViewController: UIViewController {
         do {
             if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                 print(jsonResponse)
+                // TODO: Error Handling
             }
         } catch {
             fatalError("Failed to retrieve JSON Response from Backend");
@@ -229,6 +230,7 @@ class MealViewController: UIViewController {
         do {
             if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                 print(jsonResponse)
+                // TODO: Error Handling
             }
         } catch {
             fatalError("Failed to retrieve JSON Response from Backend");

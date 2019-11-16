@@ -59,9 +59,10 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            // DELETE-Request to Backend
+            deleteLikeOrDislikeOfUserFor(meal: favoriteMeals[indexPath.row])
             // Delete the row from the data source
             favoriteMeals.remove(at: indexPath.row)
-            // TODO: DELETE-Request to Backend
             tableView.deleteRows(at: [indexPath], with: .fade)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -81,9 +82,10 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     }
     
     @IBAction func deletaAllFavoriteMeals(_ sender: UIBarButtonItem) {
-        // TODO: DELETE-Request for Deletion of all meals which user liked or disliked
-        //favoriteMeals = [Meal]()
-        //favoritesTableView.reloadData()
+        // DELETE-Request for Deletion of all meals which user liked or disliked
+        deleteAllLikesOrDislikes()
+        favoriteMeals = [Meal]()
+        favoritesTableView.reloadData()
     }
     
     
@@ -107,11 +109,65 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     }
     
     //MARK: Private Functions
+    /* Starts DELETE-Request to Backend to delete ALL likes or dislikes of a specified user */
+    private func deleteAllLikesOrDislikes() {
+        let user = [
+            "userId": UserSession.getSessionToken()
+        ]
+        NetworkingManager.shared.DELETERequestToBackend(route: "/meals/alllikes", body: user, completionHandler: deleteAllLikesOrDislikesHandler)
+    }
+    
+    /* Completion Handler for DELETE-Request to delete all likes and dislikes of a user */
+    private func deleteAllLikesOrDislikesHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        guard error == nil else {
+            fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occurred on server side, while executing REST Call.")
+        }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                // TODO: Error Handling
+                print(json)
+            }
+        } catch let error {
+            fatalError("Error: \(error.localizedDescription)")
+        }
+    }
+    
+    /* Starts DELETE-Request to Backend to delete a like or dislike of a specified user regarding a specified Meal */
+    private func deleteLikeOrDislikeOfUserFor(meal: Meal) {
+        let like = [
+            "userId": UserSession.getSessionToken(),
+            "mealId": meal.id
+        ]
+        NetworkingManager.shared.DELETERequestToBackend(route: "/meals/likes", body: like, completionHandler: deleteLikeOrDislikeHandler)
+    }
+    
+    /* Completion Handler for DELETE-Request to Backend to delete a like or dislike */
+    private func deleteLikeOrDislikeHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
+        guard error == nil else {
+            fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
+        }
+        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
+            fatalError("An Error occurred on server side, while executing REST Call.")
+        }
+        do {
+            if let json = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
+                // TODO: Error Handling
+                print(json)
+            }
+        } catch let error {
+            fatalError("Error: \(error.localizedDescription)")
+        }
+    }
+    
     /* Starts GET-Request to Backend to get all meals the user either liked or disliked */
     private func loadTableData() {
         NetworkingManager.shared.GETRequestToBackend(route: "/meals/userlikes", queryParams: "?userid=\(UserSession.getSessionToken())", completionHandler: loadTableDataHandler)
     }
     
+    /* Completion Handler for GET-Request to Backend to get all meals the user either liked or disliked */
     private func loadTableDataHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -132,6 +188,7 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
         }
     }
     
+    /* Initializes the Meals Array and fills the likes and dislikes Array with the appropriate mealId's */
     private func initializeMealArray(json: [String: Any]) {
         if let jsonMeals = json["meals"] as? [NSDictionary] {
             for jsonMeal in jsonMeals {
