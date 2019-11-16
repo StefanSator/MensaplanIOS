@@ -15,10 +15,10 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     var dislikes = [Int]()
     @IBOutlet weak var favoritesTableView: UITableView!
     
-    /* override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadTableData()
-    } */
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

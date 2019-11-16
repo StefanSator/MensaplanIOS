@@ -21,6 +21,9 @@
 		EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E6232900F1008C572C /* MealTableViewController.swift */; };
 		EA93515D237C518B005BC96C /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA93515C237C518B005BC96C /* UserSession.swift */; };
 		EA93515F237D63FE005BC96C /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA93515E237D63FE005BC96C /* NetworkingManager.swift */; };
+		EA935161238048B8005BC96C /* PopularMealsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA935160238048B8005BC96C /* PopularMealsViewController.swift */; };
+		EA93516323805269005BC96C /* 4768-trophy.json in Resources */ = {isa = PBXBuildFile; fileRef = EA93516223805269005BC96C /* 4768-trophy.json */; };
+		EA93516723805CC2005BC96C /* 6627-dislike-thumb-emoji.json in Resources */ = {isa = PBXBuildFile; fileRef = EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */; };
 		EAACDE03232FCC0200376EC0 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACDE02232FCC0200376EC0 /* Toast.swift */; };
 		EAAFA3692327AE7400904EB3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAFA3682327AE7400904EB3 /* AppDelegate.swift */; };
 		EAAFA36B2327AE7400904EB3 /* MealViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAFA36A2327AE7400904EB3 /* MealViewController.swift */; };
@@ -59,6 +62,9 @@
 		EA8C80E6232900F1008C572C /* MealTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealTableViewController.swift; sourceTree = "<group>"; };
 		EA93515C237C518B005BC96C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		EA93515E237D63FE005BC96C /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
+		EA935160238048B8005BC96C /* PopularMealsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMealsViewController.swift; sourceTree = "<group>"; };
+		EA93516223805269005BC96C /* 4768-trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "4768-trophy.json"; path = "../../../../../../../../Downloads/4768-trophy.json"; sourceTree = "<group>"; };
+		EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "6627-dislike-thumb-emoji.json"; path = "../../../../../../../../Downloads/6627-dislike-thumb-emoji.json"; sourceTree = "<group>"; };
 		EAACDE02232FCC0200376EC0 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EAAFA3652327AE7400904EB3 /* Mensaplan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mensaplan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAFA3682327AE7400904EB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -150,7 +156,10 @@
 				EA0C6DB423796FF500B6219C /* AccountViewController.swift */,
 				EA93515C237C518B005BC96C /* UserSession.swift */,
 				EA93515E237D63FE005BC96C /* NetworkingManager.swift */,
+				EA935160238048B8005BC96C /* PopularMealsViewController.swift */,
 				EAAFA36C2327AE7400904EB3 /* Main.storyboard */,
+				EA93516223805269005BC96C /* 4768-trophy.json */,
+				EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */,
 				EAAFA36F2327AE7500904EB3 /* Assets.xcassets */,
 				EAAFA3712327AE7500904EB3 /* LaunchScreen.storyboard */,
 				EAAFA3742327AE7500904EB3 /* Info.plist */,
@@ -251,8 +260,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA93516323805269005BC96C /* 4768-trophy.json in Resources */,
 				EAAFA3732327AE7500904EB3 /* LaunchScreen.storyboard in Resources */,
 				EAAFA3702327AE7500904EB3 /* Assets.xcassets in Resources */,
+				EA93516723805CC2005BC96C /* 6627-dislike-thumb-emoji.json in Resources */,
 				EAAFA36E2327AE7400904EB3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -349,6 +360,7 @@
 				EAAFA36B2327AE7400904EB3 /* MealViewController.swift in Sources */,
 				EA8C80E32327D152008C572C /* Meal.swift in Sources */,
 				EA0C6DAD2374270500B6219C /* LoginViewController.swift in Sources */,
+				EA935161238048B8005BC96C /* PopularMealsViewController.swift in Sources */,
 				EAAFA3692327AE7400904EB3 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
