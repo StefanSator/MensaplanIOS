@@ -43,9 +43,14 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
         }
         // Configure the cell
         let meal = favoriteMeals[indexPath.row]
-        cell.mealImage.image = meal.image
         cell.mealNameLabel.text = meal.name
-        cell.mealPrizeLabel.text = "\(meal.cost.students), \(meal.cost.employees), \(meal.cost.guests)"
+        if (likes.contains(meal.id)) {
+            cell.kindLabel.textColor = UIColor.blue
+            cell.kindLabel.text = "✓"
+        } else if (dislikes.contains(meal.id)) {
+            cell.kindLabel.textColor = UIColor.red
+            cell.kindLabel.text = "×"
+        }
         
         return cell
     }
@@ -102,7 +107,7 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
             }
             let selectedMeal = favoriteMeals[indexPath.row]
             mealViewController.meal = selectedMeal
-            mealViewController.delegate2 = self
+            mealViewController.delegate = self
         default:
             fatalError("Segue Identifier unknown: \(String(describing: segue.identifier))")
         }
@@ -190,6 +195,7 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     
     /* Initializes the Meals Array and fills the likes and dislikes Array with the appropriate mealId's */
     private func initializeMealArray(json: [String: Any]) {
+        clearTableData()
         if let jsonMeals = json["meals"] as? [NSDictionary] {
             for jsonMeal in jsonMeals {
                 guard let meal = Meal(dictionary: jsonMeal) else {
@@ -212,6 +218,13 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
                 }
             }
         }
+    }
+    
+    /* Clears the current Data Set of the Table */
+    private func clearTableData() {
+        favoriteMeals = [Meal]()
+        likes = [Int]()
+        dislikes = [Int]()
     }
     
     /*

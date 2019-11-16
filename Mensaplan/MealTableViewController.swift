@@ -101,7 +101,7 @@ class MealTableViewController: UIViewController, UITableViewDataSource, ChangesL
             }
             let selectedMeal = meals[indexPath.row]
             mealViewController.meal = selectedMeal
-            mealViewController.delegate2 = self
+            mealViewController.delegate = self
         default:
             fatalError("Segue Identifier unknown: \(String(describing: segue.identifier))")
         }
