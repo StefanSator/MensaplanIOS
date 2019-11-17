@@ -110,7 +110,8 @@ class MealTableViewController: UIViewController, UITableViewDataSource, ChangesL
     //MARK: Private Functions
     /* Starts GET-Request to the Backend to get Meal Data */
     private func loadMealData(weekDay: String) {
-        let calendarWeek = calendar.component(.weekOfYear, from: Date())
+        //let calendarWeek = calendar.component(.weekOfYear, from: Date())
+        let calendarWeek = 46 // TODO
         let year = calendar.component(.year, from: Date())
         NetworkingManager.shared.GETRequestToBackend(route: "/meals", queryParams: "?weekDay='\(weekDay)'&calendarWeek=\(calendarWeek)&year=\(year)", completionHandler: loadMealDataHandler)
     }

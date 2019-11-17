@@ -55,14 +55,6 @@ class MealViewController: UIViewController {
         // If meal is a Like of the user, highlight Like Button or if it is a dislike highlight the Dislike Button
         // and set number of likes and dislikes
         getLikeDislikeState()
-        //loadMealFavorites()
-        /* if savedFavorites!.contains(where: {(data) in return data.name == self.meal!.name}) {
-            highlightLikeDislikeButtons(like: true, dislike: false)
-            likesMeal = true
-        } else {
-            highlightLikeDislikeButtons(like: false, dislike: true)
-            likesMeal = false
-        } */
     }
     
     //MARK: Actions
@@ -108,17 +100,6 @@ class MealViewController: UIViewController {
             // Update Like State
             updateLikeState(type: 1)
         }
-        delegate?.changesInLikesDislikes(true)
-        /* if likesMeal == false {
-            //saveMealToFavorites()
-            let toast = Toast(controller: self, title: "", message: "I Like!")
-            toast.showToast()
-            highlightLikeDislikeButtons(like: true, dislike: false)
-            likesMeal = true
-        } else {
-            highlightLikeDislikeButtons(like: false, dislike: false)
-            likesMeal = false
-        } */
     }
     
     @IBAction func dislike(_ sender: UIButton) {
@@ -159,17 +140,6 @@ class MealViewController: UIViewController {
             // Update Like State
             updateLikeState(type: -1)
         }
-        delegate?.changesInLikesDislikes(true)
-        /* if likesMeal == true {
-            //deleteMealFromFavorites()
-            let toast = Toast(controller: self, title: "", message: "I Dislike.")
-            toast.showToast()
-            highlightLikeDislikeButtons(like: false, dislike: true)
-            likesMeal = false
-        } else {
-            highlightLikeDislikeButtons(like: false, dislike: false)
-            likesMeal = true
-        } */
     }
     
     //MARK: Private Functions
@@ -196,6 +166,9 @@ class MealViewController: UIViewController {
             if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                 print(jsonResponse)
                 // TODO: Error Handling
+                DispatchQueue.main.async {
+                    self.informDelegate()
+                }
             }
         } catch {
             fatalError("Failed to retrieve JSON Response from Backend");
@@ -226,6 +199,9 @@ class MealViewController: UIViewController {
             if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                 print(jsonResponse)
                 // TODO: Error Handling
+                DispatchQueue.main.async {
+                    self.informDelegate()
+                }
             }
         } catch {
             fatalError("Failed to retrieve JSON Response from Backend");
@@ -307,6 +283,11 @@ class MealViewController: UIViewController {
         default:
             likeState = LikeStates.neutral
         }
+    }
+    
+    /* Informs the Delegate that changes occurred */
+    private func informDelegate() {
+        delegate?.changesInLikesDislikes(true)
     }
     
     //MARK: NSCoding
