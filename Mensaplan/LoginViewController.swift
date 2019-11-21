@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ValidationComponents
 
 class LoginViewController: UIViewController {
     @IBOutlet weak var loginButton: RoundedButton!
@@ -20,6 +21,9 @@ class LoginViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func loginButtonClicked(_ sender: UIButton) {
+        if (!checkEmail()) {
+            return;
+        }
         let body = [
             "email": email.text,
             "password": password.text
@@ -31,8 +35,18 @@ class LoginViewController: UIViewController {
         performSegue(withIdentifier: "loginBackSegue", sender: self)
     }
     
-    
     // MARK: Private Functions
+    // Checks if Email is in valid format before sending it to Backend. Prevention from SQL-Injection Attacks.
+    private func checkEmail() -> Bool {
+        let rule = EmailValidationPredicate()
+        let correct = rule.evaluate(with: email.text)
+        if (!correct) {
+            showAlertForIncorrectLogin(context: self)
+            return false
+        }
+        return true
+    }
+    
     private func showAlertForIncorrectLogin(context: LoginViewController) {
         let alertController = UIAlertController(title: nil, message:
             "Incorrect Login", preferredStyle: .alert)
