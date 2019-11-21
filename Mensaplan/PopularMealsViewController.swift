@@ -21,16 +21,6 @@ class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
     @IBOutlet weak var mostPopularCard: MDCCard!
     @IBOutlet weak var mostUnpopularCard: MDCCard!
     
-    /* override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        trophyAnimationView.play()
-        trophyAnimationView.loopMode = LottieLoopMode.loop
-        
-        thumbsAnimationView.play()
-        thumbsAnimationView.loopMode = LottieLoopMode.loop
-    } */
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         loadPopularAndUnpopularMeal()

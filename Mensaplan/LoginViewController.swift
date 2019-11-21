@@ -20,7 +20,11 @@ class LoginViewController: UIViewController {
     
     // MARK: Actions
     @IBAction func loginButtonClicked(_ sender: UIButton) {
-        NetworkingManager.shared.GETRequestToBackend(route: "/customers", queryParams: "?email=\(email.text ?? "")", completionHandler: loginRequestHandler)
+        let body = [
+            "email": email.text,
+            "password": password.text
+        ]
+        NetworkingManager.shared.POSTRequestToBackend(route: "/customers/validate", body: body as [String : Any], completionHandler: loginRequestHandler)
     }
     
     @IBAction func backButtonClicked(_ sender: UIButton) {
@@ -48,24 +52,19 @@ class LoginViewController: UIViewController {
         }
         // Parse json response data to Dictionary
         do {
-            if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? [NSDictionary] {
+            if let jsonResponse = try JSONSerialization.jsonObject(with: data!, options: []) as? NSDictionary {
                 print("Response: \(jsonResponse)")
                 DispatchQueue.main.async {
-                    guard jsonResponse.count != 0 else {
-                        self.showAlertForIncorrectLogin(context: self)
-                        return;
+                    guard let successful = jsonResponse["successful"] as? Int else {
+                        fatalError("Could not retrieve from JSON if Request was successful.")
                     }
-                    guard let userPassword = jsonResponse[0]["password"] as? String else {
-                        fatalError("Could not read User Password from Server.")
+                    guard let sessionToken = jsonResponse["sessiontoken"] as? Int else {
+                        fatalError("Could not retrieve session token from JSON of request.")
                     }
-                    guard let sessionToken = jsonResponse[0]["customerid"] as? Int else {
-                        fatalError("Could not retrieve Token for current Session.")
-                    }
-                    if (userPassword != self.password.text) {
+                    if (successful == 0) {
                         self.showAlertForIncorrectLogin(context: self)
                         return;
                     } else {
-                        print("Login correct.")
                         UserSession.setSessionToken(sessionToken)
                         self.performSegue(withIdentifier: "loginSuccessfulSegue", sender: self)
                     }
