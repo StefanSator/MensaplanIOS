@@ -19,6 +19,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <visualEffectView opaque="NO" alpha="0.59999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mxf-gH-DuS">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="HNd-GZ-Lq7">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I7t-HR-xwK">
                                 <rect key="frame" x="50" y="234" width="314" height="438"/>
                                 <subviews>
@@ -157,9 +165,13 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="mxf-gH-DuS" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="3v0-x9-xBp"/>
                             <constraint firstItem="I7t-HR-xwK" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="190" id="DnG-jb-kt7"/>
+                            <constraint firstItem="mxf-gH-DuS" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="FQa-eL-9a4"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="I7t-HR-xwK" secondAttribute="trailing" constant="50" id="MLd-sL-zhb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="I7t-HR-xwK" secondAttribute="bottom" constant="190" id="RkJ-nz-adT"/>
+                            <constraint firstItem="mxf-gH-DuS" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Sg4-p7-n7p"/>
+                            <constraint firstAttribute="bottom" secondItem="mxf-gH-DuS" secondAttribute="bottom" id="XJH-ff-0rc"/>
                             <constraint firstItem="I7t-HR-xwK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="vVI-AU-Rng"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -172,6 +184,7 @@
                         <outlet property="guestPrize" destination="VYF-MS-zsK" id="17M-r3-LaX"/>
                         <outlet property="likeButton" destination="tPk-TV-qVn" id="2il-gx-lf3"/>
                         <outlet property="likeCountLabel" destination="CPq-dG-qMr" id="20V-WS-INz"/>
+                        <outlet property="mealDialog" destination="I7t-HR-xwK" id="Bgd-Dx-xF9"/>
                         <outlet property="mealImage" destination="pRc-d0-eu4" id="ukQ-Hs-bih"/>
                         <outlet property="mealName" destination="7D3-hy-oYJ" id="85P-zs-6pt"/>
                         <outlet property="studentPrize" destination="k1Z-Fe-Zm6" id="ZQA-FZ-6IE"/>

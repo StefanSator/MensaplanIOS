@@ -30,6 +30,7 @@ class MealViewController: UIViewController {
     @IBOutlet weak var dislikeButton: UIButton!
     @IBOutlet weak var likeCountLabel: UILabel!
     @IBOutlet weak var dislikeCountLabel: UILabel!
+    @IBOutlet weak var mealDialog: UIView!
     
     //MARK: Types
     struct LikeStates {
@@ -44,6 +45,7 @@ class MealViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        mealDialog.layer.cornerRadius = 5
         guard meal != nil else {
             fatalError("No meal defined.")
         }
