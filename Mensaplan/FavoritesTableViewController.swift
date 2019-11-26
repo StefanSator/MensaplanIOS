@@ -116,10 +116,8 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     //MARK: Private Functions
     /* Starts DELETE-Request to Backend to delete ALL likes or dislikes of a specified user */
     private func deleteAllLikesOrDislikes() {
-        let user = [
-            "userId": UserSession.getSessionToken()
-        ]
-        NetworkingManager.shared.DELETERequestToBackend(route: "/meals/alllikes", body: user, completionHandler: deleteAllLikesOrDislikesHandler)
+        let queryParams = "?sessionId=\(UserSession.getSessionToken())"
+        NetworkingManager.shared.DELETERequestToBackend(route: "/meals/alllikes", queryParams: queryParams, completionHandler: deleteAllLikesOrDislikesHandler)
     }
     
     /* Completion Handler for DELETE-Request to delete all likes and dislikes of a user */
@@ -142,11 +140,8 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     
     /* Starts DELETE-Request to Backend to delete a like or dislike of a specified user regarding a specified Meal */
     private func deleteLikeOrDislikeOfUserFor(meal: Meal) {
-        let like = [
-            "userId": UserSession.getSessionToken(),
-            "mealId": meal.id
-        ]
-        NetworkingManager.shared.DELETERequestToBackend(route: "/meals/likes", body: like, completionHandler: deleteLikeOrDislikeHandler)
+        let queryParams = "?mealId=\(meal.id)&sessionId=\(UserSession.getSessionToken())"
+        NetworkingManager.shared.DELETERequestToBackend(route: "/meals/likes", queryParams: queryParams, completionHandler: deleteLikeOrDislikeHandler)
     }
     
     /* Completion Handler for DELETE-Request to Backend to delete a like or dislike */

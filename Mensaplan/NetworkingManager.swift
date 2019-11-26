@@ -45,20 +45,15 @@ class NetworkingManager {
     }
     
     /* Starts a DELETE Request to Heroku Backend */
-    func DELETERequestToBackend(route: String, body: [String: Any], completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+    func DELETERequestToBackend(route: String, queryParams: String, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         let session = URLSession.shared
-        guard let url = URL(string: "\(backendURL)\(route)") else {
+        guard let url = URL(string: "\(backendURL)\(route)\(queryParams)") else {
             fatalError("The URL could not be resolved.")
         }
         var request = URLRequest(url: url)
         request.httpMethod = "DELETE"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        do {
-            let json = try JSONSerialization.data(withJSONObject: body, options: [])
-            let task = session.uploadTask(with: request, from: json, completionHandler: completionHandler)
-            task.resume()
-        } catch let error {
-            fatalError("Error: \(error.localizedDescription)")
-        }
+        let task = session.dataTask(with: request, completionHandler: completionHandler)
+        task.resume()
     }
 }

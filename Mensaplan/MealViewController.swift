@@ -147,11 +147,8 @@ class MealViewController: UIViewController {
     //MARK: Private Functions
     /* Starts Backend DELETE-Request to delete likes or dislikes from DB */
     private func deleteLikeDislikeInDB() {
-        let like = [
-            "userId": UserSession.getSessionToken(),
-            "mealId": meal!.id
-        ]
-        NetworkingManager.shared.DELETERequestToBackend(route: "/meals\(likeRoute)", body: like, completionHandler: deleteLikeDislikeHandler)
+        let queryParams = "?mealId=\(meal!.id)&sessionId=\(UserSession.getSessionToken())"
+        NetworkingManager.shared.DELETERequestToBackend(route: "/meals\(likeRoute)", queryParams: queryParams, completionHandler: deleteLikeDislikeHandler)
     }
     
     /* Completion Handler for Backend DELETE-Request for deleting likes and dislikes */
