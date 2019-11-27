@@ -8,7 +8,7 @@
 
 import UIKit
 import Lottie
-import MaterialComponents
+import MaterialComponents.MaterialCards
 
 class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
     var calendar = NSCalendar.current

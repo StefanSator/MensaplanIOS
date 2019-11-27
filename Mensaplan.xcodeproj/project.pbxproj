@@ -63,8 +63,8 @@
 		EA93515C237C518B005BC96C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		EA93515E237D63FE005BC96C /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		EA935160238048B8005BC96C /* PopularMealsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMealsViewController.swift; sourceTree = "<group>"; };
-		EA93516223805269005BC96C /* 4768-trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "4768-trophy.json"; path = "../../../../../../../../Downloads/4768-trophy.json"; sourceTree = "<group>"; };
-		EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "6627-dislike-thumb-emoji.json"; path = "../../../../../../../../Downloads/6627-dislike-thumb-emoji.json"; sourceTree = "<group>"; };
+		EA93516223805269005BC96C /* 4768-trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "4768-trophy.json"; path = "Mensaplan/4768-trophy.json"; sourceTree = SOURCE_ROOT; };
+		EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "6627-dislike-thumb-emoji.json"; path = "Mensaplan/6627-dislike-thumb-emoji.json"; sourceTree = SOURCE_ROOT; };
 		EAACDE02232FCC0200376EC0 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EAAFA3652327AE7400904EB3 /* Mensaplan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mensaplan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAFA3682327AE7400904EB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };

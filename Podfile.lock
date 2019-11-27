@@ -15,6 +15,8 @@ PODS:
   - MaterialComponents/Ink (93.1.1):
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
+  - MaterialComponents/Palettes (93.1.1)
+  - MaterialComponents/private/Application (93.1.1)
   - MaterialComponents/private/Color (93.1.1)
   - MaterialComponents/private/Icons/Base (93.1.1)
   - MaterialComponents/private/Icons/ic_check_circle (93.1.1):
@@ -31,6 +33,17 @@ PODS:
     - MaterialComponents/private/Color
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
+  - MaterialComponents/TextFields (93.1.1):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/Elevation
+    - MaterialComponents/Palettes
+    - MaterialComponents/private/Math
+    - MaterialComponents/Typography
+    - MDFInternationalization
+  - MaterialComponents/Typography (93.1.1):
+    - MaterialComponents/private/Application
+    - MaterialComponents/private/Math
+  - MDFInternationalization (2.0.0)
   - ValidationComponents (0.3.0):
     - ValidationToolkit (~> 0.4.1)
   - ValidationToolkit (0.4.1)
@@ -38,21 +51,24 @@ PODS:
 DEPENDENCIES:
   - lottie-ios
   - MaterialComponents/Cards
+  - MaterialComponents/TextFields
   - ValidationComponents
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - lottie-ios
     - MaterialComponents
+    - MDFInternationalization
     - ValidationComponents
     - ValidationToolkit
 
 SPEC CHECKSUMS:
   lottie-ios: 496ac5cea1bbf1a7bd1f1f472f3232eb1b8d744b
   MaterialComponents: 995a697f3fc57f540ad93f2d904307147cf2e65a
+  MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   ValidationComponents: fad1f9e9d7fbf3e10c893c880ef9d27627e90382
   ValidationToolkit: ce8e9c1a5d49eddc3266a009d46df5ea22042dbc
 
-PODFILE CHECKSUM: 2c320502bdd43716fbd8ff01479e2afb0035324b
+PODFILE CHECKSUM: 27dd7c3a7cf9edb25f5c1ca9bf7d92d57d2ac864
 
 COCOAPODS: 1.7.5

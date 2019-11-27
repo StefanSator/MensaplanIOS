@@ -8,17 +8,27 @@
 
 import UIKit
 import ValidationComponents
+import MaterialComponents.MDCTextField
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController, UITextFieldDelegate {
+    var arrayOfTextFieldControllerFloating = [MDCTextInputControllerOutlined]()
     let backendURL: String = "https://young-beyond-20476.herokuapp.com/customers"
-    @IBOutlet weak var emailTextField: UITextField!
-    @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var passwordTextField1: UITextField!
-    @IBOutlet weak var passwordTextField2: UITextField!
+    @IBOutlet weak var emailTextField: MDCTextField!
+    @IBOutlet weak var usernameTextField: MDCTextField!
+    @IBOutlet weak var passwordTextField1: MDCTextField!
+    @IBOutlet weak var passwordTextField2: MDCTextField!
     @IBOutlet weak var registerButton: RoundedButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        emailTextField.delegate = self
+        usernameTextField.delegate = self
+        passwordTextField1.delegate = self
+        passwordTextField2.delegate = self
+        arrayOfTextFieldControllerFloating.append(MDCTextInputControllerOutlined(textInput: emailTextField))
+        arrayOfTextFieldControllerFloating.append(MDCTextInputControllerOutlined(textInput: usernameTextField))
+        arrayOfTextFieldControllerFloating.append(MDCTextInputControllerOutlined(textInput: passwordTextField1))
+        arrayOfTextFieldControllerFloating.append(MDCTextInputControllerOutlined(textInput: passwordTextField2))
     }
     
     // MARK: Actions

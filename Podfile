@@ -7,6 +7,7 @@ target 'Mensaplan' do
 
   # Pods for Mensaplan
   pod 'MaterialComponents/Cards'
+  pod 'MaterialComponents/TextFields'
   pod 'ValidationComponents'
   pod 'lottie-ios'
 

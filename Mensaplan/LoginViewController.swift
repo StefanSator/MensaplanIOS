@@ -8,15 +8,21 @@
 
 import UIKit
 import ValidationComponents
+import MaterialComponents.MDCTextField
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
+    var arrayOfTextFieldControllerFloating = [MDCTextInputControllerOutlined]()
     @IBOutlet weak var loginButton: RoundedButton!
     @IBOutlet weak var backButton: UIButton!
-    @IBOutlet weak var email: UITextField!
-    @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var email: MDCTextField!
+    @IBOutlet weak var password: MDCTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        email.delegate = self
+        password.delegate = self
+        arrayOfTextFieldControllerFloating.append(MDCTextInputControllerOutlined(textInput: email))
+        arrayOfTextFieldControllerFloating.append(MDCTextInputControllerOutlined(textInput: password))
     }
     
     // MARK: Actions
