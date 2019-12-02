@@ -14,6 +14,8 @@
 		EA0C6DAF2374938E00B6219C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */; };
 		EA0C6DB32378541C00B6219C /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */; };
 		EA0C6DB523796FF500B6219C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DB423796FF500B6219C /* AccountViewController.swift */; };
+		EA3B007D23951C990089A906 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3B007C23951C990089A906 /* NotificationManager.swift */; };
+		EA3B007F23951CF10089A906 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3B007E23951CF10089A906 /* Notification.swift */; };
 		EA6C6EA4232BDB0500B6DBCD /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */; };
 		EA6C6EA6232FB1A600B6DBCD /* FavoritesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */; };
 		EA8C80E32327D152008C572C /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C80E22327D152008C572C /* Meal.swift */; };
@@ -55,6 +57,8 @@
 		EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		EA0C6DB423796FF500B6219C /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		EA3B007C23951C990089A906 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		EA3B007E23951CF10089A906 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewController.swift; sourceTree = "<group>"; };
 		EA8C80E22327D152008C572C /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
@@ -157,6 +161,8 @@
 				EA93515C237C518B005BC96C /* UserSession.swift */,
 				EA93515E237D63FE005BC96C /* NetworkingManager.swift */,
 				EA935160238048B8005BC96C /* PopularMealsViewController.swift */,
+				EA3B007C23951C990089A906 /* NotificationManager.swift */,
+				EA3B007E23951CF10089A906 /* Notification.swift */,
 				EAAFA36C2327AE7400904EB3 /* Main.storyboard */,
 				EA93516223805269005BC96C /* 4768-trophy.json */,
 				EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */,
@@ -347,6 +353,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA8C80E7232900F1008C572C /* MealTableViewController.swift in Sources */,
+				EA3B007D23951C990089A906 /* NotificationManager.swift in Sources */,
+				EA3B007F23951CF10089A906 /* Notification.swift in Sources */,
 				EA0C6DB32378541C00B6219C /* FavoritesTableViewCell.swift in Sources */,
 				EA0C6DB523796FF500B6219C /* AccountViewController.swift in Sources */,
 				EA93515F237D63FE005BC96C /* NetworkingManager.swift in Sources */,

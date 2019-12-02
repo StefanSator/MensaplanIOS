@@ -30,6 +30,7 @@ class MealViewController: UIViewController {
     @IBOutlet weak var dislikeButton: UIButton!
     @IBOutlet weak var likeCountLabel: UILabel!
     @IBOutlet weak var dislikeCountLabel: UILabel!
+    @IBOutlet weak var notificationButton: UIButton!
     @IBOutlet weak var mealDialog: UIView!
     
     //MARK: Types
@@ -143,6 +144,26 @@ class MealViewController: UIViewController {
             updateLikeState(type: -1)
         }
     }
+    
+    /* Sets Notification for displayed Meal and informs user when Meal is available. Even if user is absent and not in the app. */
+    @IBAction func setNotificationForMeal(_ sender: UIButton) {
+        guard meal != nil else {
+            print("No meal defined to set notification for user.")
+            return;
+        }
+        let year = meal!.year
+        let month = meal!.month
+        let day = meal!.day
+        // Get Notification Manager
+        let notificationManager = NotificationManager.shared
+        // Set the Notification
+        let notification = Notification(id: "\(meal!.id)", title: "Gericht heute verfügbar!", body: "\(meal!.name)", datetime: DateComponents(calendar: Calendar.current, year: year, month: month, day: day, hour: 11, minute: 00))
+        // Append to notifications array in Manager
+        notificationManager.notifications = [notification]
+        // Schedule Notification
+        notificationManager.schedule(context: self)
+    }
+    
     
     //MARK: Private Functions
     /* Starts Backend DELETE-Request to delete likes or dislikes from DB */
