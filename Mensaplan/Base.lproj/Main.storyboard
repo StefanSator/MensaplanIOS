@@ -661,7 +661,7 @@
                                                     <constraint firstAttribute="width" constant="150" id="vbS-kC-dbN"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="4768-trophy"/>
+                                                    <userDefinedRuntimeAttribute type="string" keyPath="animationName" value="677-trophy"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gerichtname" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="10" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SmM-NS-0ds">
@@ -911,6 +911,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="sZ5-Ke-OWf"/>
         <segue reference="j2l-68-yDV"/>
-        <segue reference="7h1-dn-MUq"/>
+        <segue reference="CWs-7G-ybj"/>
     </inferredMetricsTieBreakers>
 </document>

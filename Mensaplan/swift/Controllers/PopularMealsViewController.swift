@@ -79,8 +79,7 @@ class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
     //MARK: Private Functions
     /* Starts GET-Request to Heroku Backend to get the current most popular and most unpopular Meal */
     private func loadPopularAndUnpopularMeal() {
-        //let calendarWeek = calendar.component(.weekOfYear, from: Date())
-        let calendarWeek = 46 // TODO
+        let calendarWeek = calendar.component(.weekOfYear, from: Date())
         let year = calendar.component(.year, from: Date())
         var weekDayID = calendar.component(.weekday, from: Date())
         if (weekDayID == 1 || weekDayID == 7) { // when Sa or Su, set weekday = Fri

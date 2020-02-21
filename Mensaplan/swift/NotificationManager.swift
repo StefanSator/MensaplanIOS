@@ -47,7 +47,7 @@ class NotificationManager {
     
     // MARK: Private Functions
     /* Request permission from user to set the Notification */
-    public func requestAuthorization() {
+    private func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { allowed, error in
             guard error == nil else {
                 print("An Error happend while asking user for permission for notifications: \(error!.localizedDescription)")
@@ -57,7 +57,7 @@ class NotificationManager {
                 print("User denied the permission for setting notifications.")
                 if (self.context != nil) {
                     DispatchQueue.main.async {
-                        let toast = Toast(controller: self.context!, title: "", message: "Ok! We will not send notifications.");
+                        let toast = Toast(controller: self.context!, title: "", message: "Verstanden! Wir werden Ihnen keine Benachrichtigung senden.");
                         toast.showToast();
                     }
                 }
@@ -84,7 +84,7 @@ class NotificationManager {
                 print("Notification with id: \(notification.id) successfully scheduled.")
                 if (self.context != nil) {
                     DispatchQueue.main.async {
-                        let toast = Toast(controller: self.context!, title: "", message: "Ok! We will not notify you.");
+                        let toast = Toast(controller: self.context!, title: "", message: "Ok! Sie werden bei Verfügbarkeit benachrichtigt.");
                         toast.showToast();
                     }
                 }

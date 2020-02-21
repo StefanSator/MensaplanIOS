@@ -14,6 +14,7 @@
 		EA0C6DAF2374938E00B6219C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */; };
 		EA0C6DB32378541C00B6219C /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */; };
 		EA0C6DB523796FF500B6219C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0C6DB423796FF500B6219C /* AccountViewController.swift */; };
+		EA3A2B1423A8C71200E7D705 /* 677-trophy.json in Resources */ = {isa = PBXBuildFile; fileRef = EA3A2B1323A8C71200E7D705 /* 677-trophy.json */; };
 		EA3B007D23951C990089A906 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3B007C23951C990089A906 /* NotificationManager.swift */; };
 		EA3B007F23951CF10089A906 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3B007E23951CF10089A906 /* Notification.swift */; };
 		EA6C6EA4232BDB0500B6DBCD /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */; };
@@ -57,6 +58,7 @@
 		EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		EA0C6DB423796FF500B6219C /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
+		EA3A2B1323A8C71200E7D705 /* 677-trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "677-trophy.json"; sourceTree = "<group>"; };
 		EA3B007C23951C990089A906 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		EA3B007E23951CF10089A906 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
@@ -67,8 +69,8 @@
 		EA93515C237C518B005BC96C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		EA93515E237D63FE005BC96C /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		EA935160238048B8005BC96C /* PopularMealsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopularMealsViewController.swift; sourceTree = "<group>"; };
-		EA93516223805269005BC96C /* 4768-trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "4768-trophy.json"; path = "Mensaplan/4768-trophy.json"; sourceTree = SOURCE_ROOT; };
-		EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "6627-dislike-thumb-emoji.json"; path = "Mensaplan/6627-dislike-thumb-emoji.json"; sourceTree = SOURCE_ROOT; };
+		EA93516223805269005BC96C /* 4768-trophy.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "4768-trophy.json"; path = "Mensaplan/swift/Animations/4768-trophy.json"; sourceTree = SOURCE_ROOT; };
+		EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = "6627-dislike-thumb-emoji.json"; path = "Mensaplan/swift/Animations/6627-dislike-thumb-emoji.json"; sourceTree = SOURCE_ROOT; };
 		EAACDE02232FCC0200376EC0 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		EAAFA3652327AE7400904EB3 /* Mensaplan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mensaplan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAAFA3682327AE7400904EB3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +124,65 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		EA3A2B1523EADAAF00E7D705 /* swift */ = {
+			isa = PBXGroup;
+			children = (
+				EA3A2B1923EADB9000E7D705 /* Animations */,
+				EA93515C237C518B005BC96C /* UserSession.swift */,
+				EA93515E237D63FE005BC96C /* NetworkingManager.swift */,
+				EA3B007C23951C990089A906 /* NotificationManager.swift */,
+				EA3B007E23951CF10089A906 /* Notification.swift */,
+				EA3A2B1823EADB5000E7D705 /* Models */,
+				EA3A2B1723EADB3400E7D705 /* Components */,
+				EA3A2B1623EADB1500E7D705 /* Controllers */,
+			);
+			path = swift;
+			sourceTree = "<group>";
+		};
+		EA3A2B1623EADB1500E7D705 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				EA0C6DAA2374202300B6219C /* StartViewController.swift */,
+				EA0C6DAC2374270500B6219C /* LoginViewController.swift */,
+				EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */,
+				EAAFA36A2327AE7400904EB3 /* MealViewController.swift */,
+				EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */,
+				EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */,
+				EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */,
+				EA8C80E6232900F1008C572C /* MealTableViewController.swift */,
+				EA0C6DB423796FF500B6219C /* AccountViewController.swift */,
+				EA935160238048B8005BC96C /* PopularMealsViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		EA3A2B1723EADB3400E7D705 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */,
+				EAACDE02232FCC0200376EC0 /* Toast.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		EA3A2B1823EADB5000E7D705 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EA8C80E22327D152008C572C /* Meal.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EA3A2B1923EADB9000E7D705 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				EA93516223805269005BC96C /* 4768-trophy.json */,
+				EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */,
+				EA3A2B1323A8C71200E7D705 /* 677-trophy.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		EAAFA35C2327AE7400904EB3 = {
 			isa = PBXGroup;
 			children = (
@@ -145,27 +206,9 @@
 		EAAFA3672327AE7400904EB3 /* Mensaplan */ = {
 			isa = PBXGroup;
 			children = (
+				EA3A2B1523EADAAF00E7D705 /* swift */,
 				EAAFA3682327AE7400904EB3 /* AppDelegate.swift */,
-				EA0C6DAA2374202300B6219C /* StartViewController.swift */,
-				EA0C6DAC2374270500B6219C /* LoginViewController.swift */,
-				EA0C6DAE2374938E00B6219C /* RegisterViewController.swift */,
-				EAAFA36A2327AE7400904EB3 /* MealViewController.swift */,
-				EA6C6EA5232FB1A600B6DBCD /* FavoritesTableViewController.swift */,
-				EA0C6DB22378541C00B6219C /* FavoritesTableViewCell.swift */,
-				EA6C6EA3232BDB0500B6DBCD /* RoundedButton.swift */,
-				EA8C80E22327D152008C572C /* Meal.swift */,
-				EAACDE02232FCC0200376EC0 /* Toast.swift */,
-				EA8C80E42328FBB1008C572C /* MealTableViewCell.swift */,
-				EA8C80E6232900F1008C572C /* MealTableViewController.swift */,
-				EA0C6DB423796FF500B6219C /* AccountViewController.swift */,
-				EA93515C237C518B005BC96C /* UserSession.swift */,
-				EA93515E237D63FE005BC96C /* NetworkingManager.swift */,
-				EA935160238048B8005BC96C /* PopularMealsViewController.swift */,
-				EA3B007C23951C990089A906 /* NotificationManager.swift */,
-				EA3B007E23951CF10089A906 /* Notification.swift */,
 				EAAFA36C2327AE7400904EB3 /* Main.storyboard */,
-				EA93516223805269005BC96C /* 4768-trophy.json */,
-				EA93516623805CC2005BC96C /* 6627-dislike-thumb-emoji.json */,
 				EAAFA36F2327AE7500904EB3 /* Assets.xcassets */,
 				EAAFA3712327AE7500904EB3 /* LaunchScreen.storyboard */,
 				EAAFA3742327AE7500904EB3 /* Info.plist */,
@@ -270,6 +313,7 @@
 				EAAFA3732327AE7500904EB3 /* LaunchScreen.storyboard in Resources */,
 				EAAFA3702327AE7500904EB3 /* Assets.xcassets in Resources */,
 				EA93516723805CC2005BC96C /* 6627-dislike-thumb-emoji.json in Resources */,
+				EA3A2B1423A8C71200E7D705 /* 677-trophy.json in Resources */,
 				EAAFA36E2327AE7400904EB3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -533,7 +577,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CVSVQ3M7K7;
 				INFOPLIST_FILE = Mensaplan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -551,7 +597,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = CVSVQ3M7K7;
 				INFOPLIST_FILE = Mensaplan/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
