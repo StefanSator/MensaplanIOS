@@ -9,47 +9,52 @@
 import Foundation
 import UIKit
 
-class Meal : NSObject /* , NSCoding */ {
+/// Class representing a Mensa Meal.
+class Meal : NSObject {
     //MARK: Properties
+    /// ID of the Meal.
     let id: Int
+    /// Name of the Meal.
     let name: String
+    /// Weekday on which the meal is available in the mensa.
     let weekday: String
+    /// Day of month on which the meal is available in the mensa.
     let day: Int
+    /// Month on which the meal is available in the mensa.
     let month: Int
+    /// Year on which the meal is available in the mensa.
     let year: Int
+    /// Category of the meal.
     let category: String
+    /// Costs of the meal.
     var cost: (students: Double, employees: Double, guests: Double)
+    /// Number of likes.
     let likes: Int
+    /// Number of dislikes.
     let dislikes: Int
+    /// Image of the meal representing the category of the meal.
     var image: UIImage?
+    /// String describing the contents of the Meal Object.
     override public var description: String {
         return "Meal: \(name), weekday: \(weekday), Category: \(category), studentPrize: \(cost.students), employeePrize: \(cost.employees), guestPrize: \(cost.guests)"
     }
     
-    /*
-    //MARK: Archiving Paths
-    static var ArchiveURL : URL {
-        let manager = FileManager.default
-        let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first!
-        return url.appendingPathComponent("favorites")
-    } */
-    
-    //MARK:Types
-    struct PropertyKey {
-        static let id = "id"
-        static let name = "name"
-        static let weekday = "weekday"
-        static let day = "day"
-        static let category = "category"
-        static let studentCosts = "studentcosts"
-        static let employeeCosts = "employeecosts"
-        static let guestCosts = "guestcosts"
-        static let image = "image"
-        static let likes = "likes"
-        static let dislikes = "dislikes"
-    }
-    
     //MARK: Initialization
+    /// Initializes a new Meal Object.
+    ///
+    /// - Parameters:
+    ///   - id: ID of the meal.
+    ///   - name: Name of the meal.
+    ///   - day: Day of Month on which the meal is available.
+    ///   - month: Month on which the meal is available.
+    ///   - year: Year on which the meal is available.
+    ///   - weekday: Day of week on which the meal is available.
+    ///   - category: Category of the meal.
+    ///   - studentPrice: Price for students.
+    ///   - employeePrice: Price for employees.
+    ///   - guestPrice: Price for guests.
+    ///   - likes: Number of likes.
+    ///   - dislikes: Number of dislikes.
     init(id: Int, name: String, day: Int, month: Int, year: Int, weekday: String, category: String, studentPrice: Double, employeePrice: Double, guestPrice: Double, likes: Int, dislikes: Int) {
         self.id = id
         self.name = name
@@ -65,6 +70,9 @@ class Meal : NSObject /* , NSCoding */ {
         setRightImage(category: category)
     }
     
+    /// Initializes a new Meal Object from an existing dictionary.
+    ///
+    /// - Parameter dictionary: The dictionary to create the meal object from.
     init?(dictionary: NSDictionary) {
         guard let id = dictionary["mealid"] as? Int,
             let name = dictionary["mealname"] as? String,
@@ -95,87 +103,10 @@ class Meal : NSObject /* , NSCoding */ {
         setRightImage(category: category)
     }
     
-    /* init?(dictionary: Dictionary<String, String>) {
-        guard let name = dictionary["name"],
-            let weekday = dictionary["tag"],
-            let category = dictionary["warengruppe"],
-            let studentCosts = dictionary["stud"],
-            let employeeCosts = dictionary["bed"],
-            let guestCosts = dictionary["gast"],
-            let studentPrice = Double(studentCosts.replacingOccurrences(of: ",", with: ".")),
-            let employeePrice = Double(employeeCosts.replacingOccurrences(of: ",", with: ".")),
-            let guestPrice = Double(guestCosts.replacingOccurrences(of: ",", with: "."))
-        else {
-                return nil
-        }
-        self.name = name
-        self.weekday = weekday
-        self.category = category
-        self.cost = (studentPrice, employeePrice, guestPrice)
-        super.init()
-        setRightImage(category: category)
-    } */
-    
-    /* init?(dictionary: NSDictionary) {
-        guard let name = dictionary["name"] as? String,
-            let weekday = dictionary["weekday"] as? String,
-            let category = dictionary["category"] as? String,
-            let costsJSON = dictionary["cost"] as? [String : String],
-            let studentCosts = costsJSON["students"],
-            let employeeCosts = costsJSON["employees"],
-            let guestCosts = costsJSON["guests"],
-            let studentPrice = Double(studentCosts.replacingOccurrences(of: ",", with: ".")),
-            let employeePrice = Double(employeeCosts.replacingOccurrences(of: ",", with: ".")),
-            let guestPrice = Double(guestCosts.replacingOccurrences(of: ",", with: "."))
-        else {
-            return nil
-        }
-        self.name = name
-        self.weekday = weekday
-        self.category = category
-        self.cost = (studentPrice, employeePrice, guestPrice)
-        super.init()
-        setRightImage(category: category)
-    } */
-    
-    /*
-    //MARK: NSCoding
-    // A protocol that enables an object to be encoded and decoded for archiving and distribution
-    func encode(with aCoder: NSCoder) {
-        aCoder.encode(id, forKey: PropertyKey.id)
-        aCoder.encode(name, forKey: PropertyKey.name)
-        aCoder.encode(weekday, forKey: PropertyKey.weekday)
-        aCoder.encode(category, forKey: PropertyKey.category)
-        aCoder.encode(cost.students, forKey: PropertyKey.studentCosts)
-        aCoder.encode(cost.employees, forKey: PropertyKey.employeeCosts)
-        aCoder.encode(cost.guests, forKey: PropertyKey.guestCosts)
-        aCoder.encode(likes, forKey: PropertyKey.likes)
-        aCoder.encode(dislikes, forKey: PropertyKey.dislikes)
-    }
-    
-    /* Initializing the object by decoding the local saved data with NSCoder */
-    required convenience init?(coder aDecoder: NSCoder) {
-        let id = aDecoder.decodeInteger(forKey: PropertyKey.id)
-        guard let name = aDecoder.decodeObject(forKey: PropertyKey.name) as? String else {
-            fatalError("Unable to decode the name property which is required for a Meal Object.")
-        }
-        guard let weekday = aDecoder.decodeObject(forKey: PropertyKey.weekday) as? String else {
-            fatalError("Unable to decode the weekday property which is required for a Meal Object.")
-        }
-        guard let category = aDecoder.decodeObject(forKey: PropertyKey.category) as? String else {
-            fatalError("Unable to decode the category property which is required for a Meal Object.")
-        }
-        let studentCosts = aDecoder.decodeDouble(forKey: PropertyKey.studentCosts)
-        let employeeCosts = aDecoder.decodeDouble(forKey: PropertyKey.employeeCosts)
-        let guestCosts = aDecoder.decodeDouble(forKey: PropertyKey.guestCosts)
-        let likes = aDecoder.decodeInteger(forKey: PropertyKey.likes)
-        let dislikes = aDecoder.decodeInteger(forKey: PropertyKey.dislikes)
-        
-        self.init(id: id, name: name, weekday: weekday, category: category, studentPrice: studentCosts, employeePrice: employeeCosts, guestPrice: guestCosts, likes: likes, dislikes: dislikes)
-    }
- */
-    
     //MARK: Private Functions
+    /// Select the right image for the category of the meal.
+    ///
+    /// - Parameter category: Category of the meal.
     private func setRightImage(category: String) {
         if category.hasPrefix("S") {
             image = UIImage(named: "Soup")

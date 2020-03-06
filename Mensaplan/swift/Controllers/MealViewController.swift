@@ -8,32 +8,57 @@
 
 import UIKit
 
+/// Classes who implement this interface can be informed by a Delegator
+/// if changes occurred to a Meal Object, e.g. User disliked a Meal.
+/// They can then implement the Function to perform appropriate reactions to the changes,
+/// e.g. by updating the right element in the list to show the changes immediately to the user.
 protocol ChangesLikeDislikeDelegate {
+    /// Implementors of the interface can define this function to be informed if changes to a Meal
+    /// Object occurred and react to it appropriately.
+    ///
+    /// - Parameter changes: true, if changes have occurred.
     func changesInLikesDislikes(_ changes: Bool)
 }
 
+/// Controller for controlling the Detail Screen of a Meal, which is shown if a user wants to look
+/// at detailed information of a Meal in the app.
 class MealViewController: UIViewController {
     //MARK: Properties
+    /// The Delegate which gets informed if changes to the displayed Meal occurred.
     var delegate : ChangesLikeDislikeDelegate?
+    /// The Meal Object which holds the information about the displayed Mensa Meal.
     var meal : Meal?
+    /// Holds the Route for Liking Functionality in the Backendservice.
     let likeRoute = "/likes"
+    /// Current Like State of the user. A Like State tells if a user has liked, disliked or is neutral to the meal.
     var likeState = LikeStates.neutral;
-    //var savedFavorites : [Meal]?
-    //var likesMeal : Bool?
+    /// The UIImageView showing the approriate image for a meal.
     @IBOutlet weak var mealImage: UIImageView!
+    /// Label containing the name of the meal.
     @IBOutlet weak var mealName: UILabel!
+    /// Label containing the price for students for the meal.
     @IBOutlet weak var studentPrize: UILabel!
+    /// Label containing the price for guests for the meal.
     @IBOutlet weak var guestPrize: UILabel!
+    /// Label containing the price for employees for the meal.
     @IBOutlet weak var employeePrize: UILabel!
+    /// Button for closing the window.
     @IBOutlet weak var cancelButton: UIButton!
+    /// Button for liking a meal.
     @IBOutlet weak var likeButton: UIButton!
+    /// Button for disliking a meal.
     @IBOutlet weak var dislikeButton: UIButton!
+    /// Label containing the number of likes.
     @IBOutlet weak var likeCountLabel: UILabel!
+    /// Label containing the number of dislikes.
     @IBOutlet weak var dislikeCountLabel: UILabel!
+    /// Button which can be pressed to schedule a notification for the meal.
     @IBOutlet weak var notificationButton: UIButton!
+    /// The dialog window
     @IBOutlet weak var mealDialog: UIView!
     
     //MARK: Types
+    /// Struct holding the possible like types as static members of the struct.
     struct LikeStates {
         static let like = "like"
         static let dislike = "dislike"
@@ -61,10 +86,17 @@ class MealViewController: UIViewController {
     }
     
     //MARK: Actions
+    /// Click Listener for the cancelButton. Closes the Dialog Window and returns to previous window.
+    ///
+    /// - Parameter sender: The Cancel Button.
     @IBAction func cancel(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
     
+    /// Click Listener for the likeButton. Is called if user clicks on likeButton. Performs the
+    /// appropriate actions for liking a meal by communicating with the backend and updating views.
+    ///
+    /// - Parameter sender: The Like Button.
     @IBAction func like(_ sender: UIButton) {
         if (likeState == LikeStates.like) {
             // Delete Like from DB
@@ -105,6 +137,10 @@ class MealViewController: UIViewController {
         }
     }
     
+    /// Click Listener for the dislikeButton. Is called if user clicks on dislikeButton. Performs the
+    /// appropriate actions for disliking a meal by communicating with the backend and updating views.
+    ///
+    /// - Parameter sender: The Dislike Button.
     @IBAction func dislike(_ sender: UIButton) {
         if (likeState == LikeStates.dislike) {
             // Delete Like from DB
@@ -145,7 +181,10 @@ class MealViewController: UIViewController {
         }
     }
     
-    /* Sets Notification for displayed Meal and informs user when Meal is available. Even if user is absent and not in the app. */
+    /// Action which is called automatically if user clicks the notificationButton. Sets Notification for displayed Meal
+    /// and informs user when Meal is available. Even if user is absent and not in the app.
+    ///
+    /// - Parameter sender: The Notification Button.
     @IBAction func setNotificationForMeal(_ sender: UIButton) {
         guard meal != nil else {
             print("No meal defined to set notification for user.")
@@ -166,13 +205,18 @@ class MealViewController: UIViewController {
     
     
     //MARK: Private Functions
-    /* Starts Backend DELETE-Request to delete likes or dislikes from DB */
+    /// Starts Backend DELETE-Request to delete likes or dislikes from DB.
     private func deleteLikeDislikeInDB() {
         let queryParams = "?mealId=\(meal!.id)&sessionId=\(UserSession.getSessionToken())"
         NetworkingManager.shared.DELETERequestToBackend(route: "/meals\(likeRoute)", queryParams: queryParams, completionHandler: deleteLikeDislikeHandler)
     }
     
-    /* Completion Handler for Backend DELETE-Request for deleting likes and dislikes */
+    /// Completion Handler for Backend DELETE-Request for deleting likes and dislikes.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func deleteLikeDislikeHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         // Check for error on client side
         guard error == nil else {
@@ -195,7 +239,9 @@ class MealViewController: UIViewController {
         }
     }
     
-    /* Starts Backend POST-Request to update or insert like, dislike in DB */
+    /// Starts Backend POST-Request to update or insert like, dislike in DB.
+    ///
+    /// - Parameter type: The type of the like. Like: 1. Dislike: -1.
     private func insertOrUpdateLikeDislikeInDB(type: Int) {
         let like = [
             "userId": UserSession.getSessionToken(),
@@ -205,7 +251,12 @@ class MealViewController: UIViewController {
         NetworkingManager.shared.POSTRequestToBackend(route: "/meals\(likeRoute)", body: like, completionHandler: insertOrUpdateLikeDislikeHandler)
     }
     
-    /* Completion Handler for Backend POST-Request for updating or inserting Likes and Dislikes of a sepecified Meal */
+    /// Completion Handler for Backend POST-Request for updating or inserting Likes and Dislikes of a sepecified Meal.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func insertOrUpdateLikeDislikeHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         // Check for error on client side
         guard error == nil else {
@@ -228,12 +279,17 @@ class MealViewController: UIViewController {
         }
     }
     
-    /* Starts Backend GET-Request to check if user likes, dislikes or is neutral to the displayed Meal */
+    /// Starts Backend GET-Request to check if user likes, dislikes or is neutral to the currently displayed Meal.
     private func getLikeDislikeState() {
         NetworkingManager.shared.GETRequestToBackend(route: "/meals\(likeRoute)", queryParams: "?mealid=\(meal!.id)&userid=\(UserSession.getSessionToken())", completionHandler: likeDislikeStateHandler)
     }
     
-    /* Completion Handler for Backend GET-Request for Like-/Dislike State of User regarding the displayed Meal */
+    /// Completion Handler for Backend GET-Request for Like-/Dislike State of User regarding the displayed Meal.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func likeDislikeStateHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -254,7 +310,10 @@ class MealViewController: UIViewController {
         }
     }
     
-    /* Change Button Colors specific to the Like-State of the user regarding this meal and set Number of Likes and Dislikes */
+    /// Change Button Colors specific to the Like-State of the user regarding this meal and set Number of Likes and Dislikes.
+    ///
+    /// - Parameter state: dictionary containing information about the likestate of a user. Keys: dislikes -> Number of dislikes of the meal.
+    /// likes -> Number of likes of the meal. state -> tells if user likes, dislikes or is neutral regarding the displayed meal.
     private func updateAndShowLikeDislikes(state: NSDictionary) {
         guard let dislikes = state["dislikes"] as? String,
             let likes = state["likes"] as? String,
@@ -279,7 +338,11 @@ class MealViewController: UIViewController {
         }
     }
     
-    /* Higlight the Buttons depending on if User has liked / disliked the Meal or nothing of both */
+    /// Highlight the Buttons appropriately, if the User has liked/disliked the Meal or nothing of both.
+    ///
+    /// - Parameters:
+    ///   - like: true, if user likes the displayed meal.
+    ///   - dislike: true, if user dislikes the displayed meal.
     private func highlightLikeDislikeButtons(like: Bool, dislike: Bool) {
         if like == true {
             likeButton.setTitleColor(.blue, for: .normal)
@@ -293,7 +356,9 @@ class MealViewController: UIViewController {
         }
     }
     
-    /* Update the Like State for a given Like type: 0: neutral, 1: like, -1: dislike */
+    /// Update the Like State for a given Like type: 0: neutral, 1: like, -1: dislike.
+    ///
+    /// - Parameter type: The type of like.
     private func updateLikeState(type: Int) {
         switch type {
         case 1:
@@ -305,56 +370,9 @@ class MealViewController: UIViewController {
         }
     }
     
-    /* Informs the Delegate that changes occurred */
+    /// Informs the registered Delegate that changes have occurred to the Meal Object.
     private func informDelegate() {
         delegate?.changesInLikesDislikes(true)
     }
-    
-    //MARK: NSCoding
-    /* private func loadMealFavorites() {
-        savedFavorites = NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
-        if savedFavorites != nil {
-            print("data saved. Number of meal data saved: \(savedFavorites!.count)")
-        } else {
-            print("No data saved. Create new Meal Array to archive meal data.")
-            savedFavorites = [Meal]()
-        }
-    }
-    
-    private func saveMealToFavorites() {
-        guard meal != nil else {
-            fatalError("No Meal defined for Archiving.")
-        }
-        savedFavorites!.append(meal!)
-        do {
-            let data = try NSKeyedArchiver.archivedData(withRootObject: savedFavorites!, requiringSecureCoding: false)
-            try data.write(to: Meal.ArchiveURL)
-        } catch let error {
-            print("Error by trying to save meal object as favorite of the user. Meal Object not saved! Error: \(error.localizedDescription)")
-        }
-        print("Meal saved as Favorite of the user.")
-        // Tell the Delegate that there where changes
-        self.delegate?.changesInFavorites(true)
-    }
-    
-    private func deleteMealFromFavorites() {
-        guard meal != nil else {
-            fatalError("No meal defined for deleting from Archive.")
-        }
-        if let index = savedFavorites!.firstIndex(where: {(data) in return data.name == self.meal!.name}) {
-            savedFavorites!.remove(at: index)
-            do {
-                let data = try NSKeyedArchiver.archivedData(withRootObject: savedFavorites!, requiringSecureCoding: false)
-                try data.write(to: Meal.ArchiveURL)
-            } catch let error {
-                print("Error by trying to save meals as favorites of the user. Meal Objects not saved! Error: \(error.localizedDescription)")
-            }
-            print("Meal saved as Favorite of the user.")
-            // Tell the Delegate that there where changes
-            self.delegate?.changesInFavorites(true)
-        } else {
-            print("Meal Item could not be found in saved Favorites of the user.")
-        }
-    } */
 
 }

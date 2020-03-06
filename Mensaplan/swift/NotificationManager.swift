@@ -10,17 +10,24 @@ import Foundation
 import UserNotifications
 import UIKit
 
+/// Class which is responsible for managing Notifications within the app.
 class NotificationManager {
+    /// Singleton Instance of the NotificationManager.
     static let shared = NotificationManager()
     // MARK: Properties
+    /// List of Notifications to manage.
     var notifications = [Notification]()
+    /// Current application context.
     var context: UIViewController?
     
     // MARK: Constructors
+    /// Private Constructor, so that it is not possible to create multiple instances of the NetworkingManager Class.
     private init() {}
     
     // MARK: Public Functions
-    /* Lists all the Notifications which are currently set */
+    /**
+     Prints all the Notifications which are currently set.
+     */
     public func listNotifications() {
         UNUserNotificationCenter.current().getPendingNotificationRequests() {
             (notifications) in
@@ -30,7 +37,10 @@ class NotificationManager {
         }
     }
     
-    /* Set Notification Permission and Schedule Notification */
+    /**
+     Set Notification Permission and schedule Notification.
+     - Parameter context: Current application context.
+     */
     public func schedule(context: UIViewController) {
         self.context = context
         UNUserNotificationCenter.current().getNotificationSettings { settings in
@@ -46,7 +56,9 @@ class NotificationManager {
     }
     
     // MARK: Private Functions
-    /* Request permission from user to set the Notification */
+    /**
+     Request permission from user to set the Notification. If permission given, call function scheduleNotifications().
+     */
     private func requestAuthorization() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { allowed, error in
             guard error == nil else {
@@ -67,7 +79,9 @@ class NotificationManager {
         }
     }
     
-    /* Schedule Notifications for Notifications which are part of the notifications list of this class */
+    /**
+     Schedule Notifications for Notifications of the notifications list.
+     */
     private func scheduleNotifications() {
         for notification in notifications {
             let content = UNMutableNotificationContent()

@@ -8,15 +8,24 @@
 
 import Foundation
 
-/* Singleton class for Networking Functionality to Heroku Backend */
+/// Class which is responsible for the Networking Communication with the Backend of the App.
 class NetworkingManager {
+    /// Singleton instance of a NetworkingManager.
     static let shared = NetworkingManager()
+    /// The URL of the backend service.
     let backendURL = "https://young-beyond-20476.herokuapp.com"
     
+    /// Private Constructor, so that it is not possible to create multiple instances of the NetworkingManager Class.
     private init() {}
     
     //Private Functions
-    /* Starts a GET Request to Heroku Backend */
+    /**
+     Handler for GET Requests to the Backend Service.
+     - Parameters:
+        - route: The Route of the service to contact.
+        - queryParams: The Query Parameters.
+        - completionHandler: The Handler called after completion of the request.
+     */
     func GETRequestToBackend(route: String, queryParams: String, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         let session = URLSession.shared
         guard let url = URL(string: "\(backendURL)\(route)\(queryParams)") else {
@@ -26,7 +35,13 @@ class NetworkingManager {
         task.resume()
     }
     
-    /* Starts a POST Request to Heroku Backend */
+    /**
+     Handler for POST Requests to the Backend Service.
+     - Parameters:
+        - route: The Route of the service to contact.
+        - body: The Body Parameters.
+        - completionHandler: The Handler called after completion of the request.
+     */
     func POSTRequestToBackend(route: String, body: [String: Any], completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         let session = URLSession.shared
         guard let url = URL(string: "\(backendURL)\(route)") else {
@@ -45,6 +60,13 @@ class NetworkingManager {
     }
     
     /* Starts a DELETE Request to Heroku Backend */
+    /**
+     Handler for DELETE Requests to the Backend Service.
+     - Parameters:
+        - route: The Route of the service to contact.
+        - queryParams: The Query Parameters.
+        - completionHandler: The Handler called after completion of the request.
+     */
     func DELETERequestToBackend(route: String, queryParams: String, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
         let session = URLSession.shared
         guard let url = URL(string: "\(backendURL)\(route)\(queryParams)") else {

@@ -10,15 +10,26 @@ import UIKit
 import Lottie
 import MaterialComponents.MaterialCards
 
+/// Controller for implementing the Most Popular and Unpopular Meal Functionality. It displays the Most
+/// Popular and Most Unpopular Meal of the current day.
 class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
+    /// Current Calendar Object.
     var calendar = NSCalendar.current
+    /// Most Popular Meal of the current day.
     var mostPopularMeal: Meal?
+    /// Most Unpopular Meal of the current day.
     var mostUnpopularMeal: Meal?
+    /// View for the Trophy Animation.
     @IBOutlet weak var trophyAnimationView: AnimationView!
+    /// Viewe for the Thumbs Down Animation.
     @IBOutlet weak var thumbsAnimationView: AnimationView!
+    /// Label containing the Name of the Most Popular Meal.
     @IBOutlet weak var mostPopularNameLabel: UILabel!
+    /// Label containing the Name of the Most Unpopular Meal.
     @IBOutlet weak var mostUnpopularNameLabel: UILabel!
+    /// Card containing the Content for the Most Popular Meal.
     @IBOutlet weak var mostPopularCard: MDCCard!
+    /// Card containing the Content for the Most Unpopular Meal.
     @IBOutlet weak var mostUnpopularCard: MDCCard!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,15 +56,26 @@ class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
     }
     
     //MARK: Actions
+    /// Opens the Meal Detail Dialog if the Card for the Most Popular Meal is clicked.
+    ///
+    /// - Parameter sender: The Most Popular Meal Card.
     @IBAction func showMostPopularMeal(_ sender: MDCCard) {
         performSegue(withIdentifier: "showMealSegue", sender: sender)
     }
     
+    /// Opens the Meal Detail Dialog if the Card for the Most Unpopular Meal is clicked.
+    ///
+    /// - Parameter sender: The Most Unpopular Meal Card.
     @IBAction func showMostUnpopularMeal(_ sender: MDCCard) {
         performSegue(withIdentifier: "showMealSegue", sender: sender)
     }
     
     //MARK: Navigation
+    /// Make Preparations before switching to another screen of the app.
+    ///
+    /// - Parameters:
+    ///   - segue: The Segue which was triggered.
+    ///   - sender: The object that initiated the segue.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         switch (segue.identifier ?? "") {
@@ -77,7 +99,7 @@ class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
     }
     
     //MARK: Private Functions
-    /* Starts GET-Request to Heroku Backend to get the current most popular and most unpopular Meal */
+    /// Starts GET-Request to Backend to retrieve the most popular and most unpopular Meal of current day.
     private func loadPopularAndUnpopularMeal() {
         let calendarWeek = calendar.component(.weekOfYear, from: Date())
         let year = calendar.component(.year, from: Date())
@@ -89,7 +111,12 @@ class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
         NetworkingManager.shared.GETRequestToBackend(route: "/meals/popular", queryParams: "?weekday='\(weekDay)'&calendarweek=\(calendarWeek)&year=\(year)", completionHandler: loadPopularAndUnpopularMealHandler)
     }
     
-    /* Completion Handler for GET-Request to get most popular and most unpopular Meal */
+    /// Completion Handler for GET-Request to get most popular and most unpopular Meal.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func loadPopularAndUnpopularMealHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -117,7 +144,10 @@ class PopularMealsViewController: UIViewController, ChangesLikeDislikeDelegate {
         }
     }
     
-    /* Returns the String Identifier of a weekday for a given weekdayID */
+    /// Returns the String Identifier of a weekday for a given int.
+    ///
+    /// - Parameter weekDayID: Current weekday as int.
+    /// - Returns: Current weekday as String.
     private func transformWeekdayIntToString(weekDayID: Int) -> String {
         switch (weekDayID) {
         case 1:

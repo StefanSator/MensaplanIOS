@@ -8,11 +8,18 @@
 
 import UIKit
 
+/// Controller for implementing the Like-History Functionality. It handles a list
+/// which contains all liked and disliked meals. It implements functionality used for
+/// managing the list.
 class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDelegate {
     //MARK: Properties
+    /// Contains all meals the user has liked and disliked.
     var favoriteMeals = [Meal]()
+    /// Contains the mealid of every liked meal.
     var likes = [Int]()
+    /// Contains the mealid of every disliked meal.
     var dislikes = [Int]()
+    /// The Table View which displays the data in a list.
     @IBOutlet weak var favoritesTableView: UITableView!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,13 +62,13 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
         return cell
     }
     
-    // Override to support conditional editing of the table view.
+    // Support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         // Return false if you do not want the specified item to be editable.
         return true
     }
     
-    // Override to support editing the table view.
+    // Support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // DELETE-Request to Backend
@@ -82,10 +89,14 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     }
     
     //MARK: Actions
+    /// Displays the Meal Detail Dialog for a item in the list, if it is selected.
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "showMealSegue", sender: self)
     }
     
+    /// Deletes all likes and dislikes of the user.
+    ///
+    /// - Parameter sender: The Delete All Button in the Top Bar of the screen.
     @IBAction func deletaAllFavoriteMeals(_ sender: UIBarButtonItem) {
         // DELETE-Request for Deletion of all meals which user liked or disliked
         deleteAllLikesOrDislikes()
@@ -95,6 +106,11 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     
     
     //MARK: Navigation
+    /// Make Preparations before switching to another screen of the app.
+    ///
+    /// - Parameters:
+    ///   - segue: The Segue which was triggered.
+    ///   - sender: The object that initiated the segue.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         switch (segue.identifier ?? "") {
@@ -114,13 +130,18 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
     }
     
     //MARK: Private Functions
-    /* Starts DELETE-Request to Backend to delete ALL likes or dislikes of a specified user */
+    /// Sends DELETE-Request to Backend Service to request deletion of ALL likes or dislikes of a specified user.
     private func deleteAllLikesOrDislikes() {
         let queryParams = "?sessionId=\(UserSession.getSessionToken())"
         NetworkingManager.shared.DELETERequestToBackend(route: "/meals/alllikes", queryParams: queryParams, completionHandler: deleteAllLikesOrDislikesHandler)
     }
     
-    /* Completion Handler for DELETE-Request to delete all likes and dislikes of a user */
+    /// Completion Handler for the DELETE-Request to delete all likes and dislikes of a user.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func deleteAllLikesOrDislikesHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -138,13 +159,21 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
         }
     }
     
-    /* Starts DELETE-Request to Backend to delete a like or dislike of a specified user regarding a specified Meal */
+    /// Starts DELETE-Request to Backend to delete a like or dislike of the logged in user regarding
+    /// a specified Meal.
+    ///
+    /// - Parameter meal: The meal for which the like or dislike should be deleted.
     private func deleteLikeOrDislikeOfUserFor(meal: Meal) {
         let queryParams = "?mealId=\(meal.id)&sessionId=\(UserSession.getSessionToken())"
         NetworkingManager.shared.DELETERequestToBackend(route: "/meals/likes", queryParams: queryParams, completionHandler: deleteLikeOrDislikeHandler)
     }
     
-    /* Completion Handler for DELETE-Request to Backend to delete a like or dislike */
+    /// Completion Handler for DELETE-Request to Backend to delete a like or dislike.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func deleteLikeOrDislikeHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -162,12 +191,17 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
         }
     }
     
-    /* Starts GET-Request to Backend to get all meals the user either liked or disliked */
+    /// Starts GET-Request to Backend to get all meals the user either liked or disliked.
     private func loadTableData() {
         NetworkingManager.shared.GETRequestToBackend(route: "/meals/userlikes", queryParams: "?userid=\(UserSession.getSessionToken())", completionHandler: loadTableDataHandler)
     }
     
-    /* Completion Handler for GET-Request to Backend to get all meals the user either liked or disliked */
+    /// Completion Handler for GET-Request to Backend to get all meals the user has either liked or disliked.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func loadTableDataHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -188,7 +222,9 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
         }
     }
     
-    /* Initializes the Meals Array and fills the likes and dislikes Array with the appropriate mealId's */
+    /// Constructs and fills favorites, likes and dislikes array with appropriate data from the backend service.
+    ///
+    /// - Parameter json: response from the backend service.
     private func initializeMealArray(json: [String: Any]) {
         clearTableData()
         if let jsonMeals = json["meals"] as? [NSDictionary] {
@@ -215,47 +251,11 @@ class FavoritesTableViewController: UITableViewController, ChangesLikeDislikeDel
         }
     }
     
-    /* Clears the current Data Set of the Table */
+    /// Clears the current Data Set of the Table.
     private func clearTableData() {
         favoriteMeals = [Meal]()
         likes = [Int]()
         dislikes = [Int]()
     }
-    
-    /*
-    //MARK: NSCoding
-    private func loadFavoriteMeals() -> [Meal]? {
-        return NSKeyedUnarchiver.unarchiveObject(withFile: Meal.ArchiveURL.path) as? [Meal]
-    }
-    
-    private func saveFavoriteMeals() {
-        do {
-            let data = try NSKeyedArchiver.archivedData(withRootObject: favoriteMeals, requiringSecureCoding: false)
-            try data.write(to: Meal.ArchiveURL)
-        } catch let error {
-            print("Error by trying to save meals as favorite of the user. Meals not saved! Error: \(error.localizedDescription)")
-        }
-        print("Meals saved as Favorites of the user.")
-    }
-    
-    //Delete Persisted Meal Data
-    private func deleteArchivedFavoriteMeals() {
-        do {
-            let manager = FileManager.default
-            try manager.removeItem(at: Meal.ArchiveURL)
-            print("All Favorites deleted.")
-        } catch let error {
-            print("Error by trying to delete favorite meals. Error: \(error.localizedDescription)")
-        }
-    }
-    
-    // Private Functions
-    private func loadTableData() {
-        let savedFavoriteMeals = loadFavoriteMeals()
-        if savedFavoriteMeals != nil {
-            favoriteMeals = savedFavoriteMeals!
-            favoritesTableView.reloadData()
-        }
-    } */
 
 }

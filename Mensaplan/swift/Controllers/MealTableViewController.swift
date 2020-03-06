@@ -12,13 +12,18 @@ import MaterialComponents.MaterialCards
 
 class MealTableViewController: UIViewController, UITableViewDataSource, ChangesLikeDislikeDelegate {
     //MARK: Properties
+    /// List containing the current Mensa Meals.
     var meals = [Meal]()
+    /// Current Calendar Object.
     var calendar = NSCalendar.current
+    /// Dictionary containing meals ordered by categories of the meals.
     private var mealsDictionary = [ 0: [Meal](),
                             1: [Meal](),
                             2: [Meal](),
                             3: [Meal]()]
+    /// Table View for displaying the list containing the Mensa Meals.
     @IBOutlet weak var mealTableView: UITableView!
+    /// Segmented Control used for switching through a tab bar between different days of the week.
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
     override func viewDidLoad() {
@@ -77,15 +82,29 @@ class MealTableViewController: UIViewController, UITableViewDataSource, ChangesL
     }
     
     // MARK: Actions
+    /// Action automatically triggered if a tab in the SegmentedControl was selected. Loads Meal Data
+    /// depending on the selected index of the Segmented Control.
+    ///
+    /// - Parameter sender: The Segmented Control View.
     @IBAction func indexChanged(_ sender: UISegmentedControl) {
         loadMealDataDependingOnSelectedIndex(segmentedControl: sender)
     }
     
+    
+    /// Action automatically triggered if a element in the list is selected. Opens the Meal Detail Window
+    /// to show Details to the selected Meal.
+    ///
+    /// - Parameter sender: The List item.
     @IBAction func itemSelected(_ sender: MDCCard) {
         performSegue(withIdentifier: "showMealSegue", sender: self)
     }
     
     //MARK: Navigation
+    /// Make Preparations before switching to another screen of the app.
+    ///
+    /// - Parameters:
+    ///   - segue: The Segue which was triggered.
+    ///   - sender: The object that initiated the segue.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         switch (segue.identifier ?? "") {
@@ -108,14 +127,21 @@ class MealTableViewController: UIViewController, UITableViewDataSource, ChangesL
     }
     
     //MARK: Private Functions
-    /* Starts GET-Request to the Backend to get Meal Data */
+    /// Get Meal Data for a selected week day from the backend service through a rest call.
+    ///
+    /// - Parameter weekDay: Selected Weekday.
     private func loadMealData(weekDay: String) {
         let calendarWeek = calendar.component(.weekOfYear, from: Date())
         let year = calendar.component(.year, from: Date())
         NetworkingManager.shared.GETRequestToBackend(route: "/meals", queryParams: "?weekDay='\(weekDay)'&calendarWeek=\(calendarWeek)&year=\(year)", completionHandler: loadMealDataHandler)
     }
     
-    /* Handles the functional Logic after GET-Request completed */
+    /// Handles the functional Logic after GET-Request in function loadMealData() has completed.
+    ///
+    /// - Parameters:
+    ///   - data: The data returned from the backend service as response.
+    ///   - response: Metadata associated with the request, e.g. the status code of the response.
+    ///   - error: Contains the Error if an error has occurred.
     private func loadMealDataHandler(_ data: Data?, _ response: URLResponse?, _ error: Error?) {
         guard error == nil else {
             fatalError("An Error occurred on client side, while executing REST Call. Error: \(error!.localizedDescription)")
@@ -136,6 +162,7 @@ class MealTableViewController: UIViewController, UITableViewDataSource, ChangesL
         }
     }
     
+    /// Clears the Data Set of the Table View.
     private func clearAllMealData() {
         mealsDictionary[0]!.removeAll()
         mealsDictionary[1]!.removeAll()
@@ -143,7 +170,9 @@ class MealTableViewController: UIViewController, UITableViewDataSource, ChangesL
         mealsDictionary[3]!.removeAll()
     }
     
-    /* Initialize the mealsDictionary by passing a JSON-Array */
+    /// Fill the Data Set with data from the JSONArray Response returned by the backend.
+    ///
+    /// - Parameter jsonArray: The JSON Array response returned from the backend service.
     private func initializeMealDictionary(jsonArray: [NSDictionary]) {
         for jsonObject in jsonArray {
             guard let meal = Meal(dictionary: jsonObject) else {
@@ -163,7 +192,9 @@ class MealTableViewController: UIViewController, UITableViewDataSource, ChangesL
         }
     }
     
-    /* Loads the right Meal Data depending on which index in UISegmentedControl is selected */
+    /// Loads the right Meal Data depending on which index in the UISegmentedControl has been selected.
+    ///
+    /// - Parameter segmentedControl: The Segmented Control View.
     private func loadMealDataDependingOnSelectedIndex(segmentedControl: UISegmentedControl) {
         clearAllMealData()
         switch segmentedControl.selectedSegmentIndex {
