@@ -286,7 +286,7 @@
 				};
 			};
 			buildConfigurationList = EAAFA3602327AE7400904EB3 /* Build configuration list for PBXProject "Mensaplan" */;
-			compatibilityVersion = "Xcode 9.3";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
