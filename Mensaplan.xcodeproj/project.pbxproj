@@ -286,7 +286,7 @@
 				};
 			};
 			buildConfigurationList = EAAFA3602327AE7400904EB3 /* Build configuration list for PBXProject "Mensaplan" */;
-			compatibilityVersion = "Xcode 6.3";
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -577,7 +577,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CVSVQ3M7K7;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Mensaplan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -597,7 +597,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = CVSVQ3M7K7;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Mensaplan/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
