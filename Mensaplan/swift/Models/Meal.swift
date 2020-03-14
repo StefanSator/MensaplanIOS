@@ -18,6 +18,8 @@ class Meal : NSObject {
     let name: String
     /// Weekday on which the meal is available in the mensa.
     let weekday: String
+    /// Index of Weekday on which the meal is available in the mensa. Index from 1-7. 1 is Sunday. 7 is Saturday.
+    var weekdayIndex: Int?
     /// Day of month on which the meal is available in the mensa.
     let day: Int
     /// Month on which the meal is available in the mensa.
@@ -68,6 +70,7 @@ class Meal : NSObject {
         self.dislikes = dislikes
         super.init()
         setRightImage(category: category)
+        setIndexOfWeekday(for: weekday)
     }
     
     /// Initializes a new Meal Object from an existing dictionary.
@@ -101,6 +104,7 @@ class Meal : NSObject {
         self.dislikes = dislikes
         super.init()
         setRightImage(category: category)
+        setIndexOfWeekday(for: weekday)
     }
     
     //MARK: Private Functions
@@ -118,6 +122,30 @@ class Meal : NSObject {
             image = UIImage(named: "Dessert")
         } else {
             image = nil
+        }
+    }
+    
+    /// Sets the right Index of a Weekday for a given weekday String.
+    ///
+    /// - Parameter weekday: The Weekday as String representation.
+    private func setIndexOfWeekday(for weekday: String) {
+        switch (weekday) {
+        case "Su":
+            weekdayIndex = 1
+        case "Mo":
+            weekdayIndex = 2
+        case "Tu":
+            weekdayIndex = 3
+        case "We":
+            weekdayIndex = 4
+        case "Th":
+            weekdayIndex = 5
+        case "Fr":
+            weekdayIndex = 6
+        case "Sa":
+            weekdayIndex = 7
+        default:
+            weekdayIndex = nil
         }
     }
 }

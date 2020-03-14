@@ -190,17 +190,34 @@ class MealViewController: UIViewController {
             print("No meal defined to set notification for user.")
             return;
         }
-        let year = meal!.year
-        let month = meal!.month
-        let day = meal!.day
-        // Get Notification Manager
-        let notificationManager = NotificationManager.shared
-        // Set the Notification
-        let notification = Notification(id: "\(meal!.id)", title: "Gericht heute verfügbar!", body: "\(meal!.name)", datetime: DateComponents(calendar: Calendar.current, year: year, month: month, day: day, hour: 11, minute: 00))
-        // Append to notifications array in Manager
-        notificationManager.notifications = [notification]
-        // Schedule Notification
-        notificationManager.schedule(context: self)
+        let currentDayOfWeek = Calendar.current.component(.weekday, from: Date())
+        guard let dayOnWhichMealIsAvailable = meal!.weekdayIndex else {
+            fatalError("Error: The weekdayIndex of the selected Meal is nil.");
+        }
+        if (dayOnWhichMealIsAvailable < currentDayOfWeek || currentDayOfWeek == 1) {
+            let alertController = UIAlertController(title: "Gericht verpasst.", message:
+                "Gericht liegt in der Vergangenheit.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alertController, animated: true, completion: nil)
+        } else if (dayOnWhichMealIsAvailable == currentDayOfWeek) {
+            let alertController = UIAlertController(title: "Gericht jetzt verfügbar.", message:
+                "Das Gericht ist zum aktuellen Zeitpunkt in der Mensa verfügbar.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            // Get Notification Manager
+            let notificationManager = NotificationManager.shared
+            // Set the Notification
+            var dateComponents = DateComponents()
+            dateComponents.calendar = Calendar.current
+            dateComponents.weekday = meal!.weekdayIndex
+            dateComponents.hour = 11
+            let notification = Notification(id: "\(meal!.id)", title: "Gericht heute verfügbar!", body: "\(meal!.name)", datetime: dateComponents)
+            // Append to notifications array in Manager
+            notificationManager.notifications = [notification]
+            // Schedule Notification
+            notificationManager.schedule(context: self)
+        }
     }
     
     
