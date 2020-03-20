@@ -2,9 +2,6 @@
 //  AccountViewController.swift
 //  Mensaplan
 //
-//  Created by Stefan Sator on 11.11.19.
-//  Copyright © 2019 Stefan Sator. All rights reserved.
-//
 
 import UIKit
 

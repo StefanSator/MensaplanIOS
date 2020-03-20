@@ -2,9 +2,6 @@
 //  NetworkingManager.swift
 //  Mensaplan
 //
-//  Created by Stefan Sator on 14.11.19.
-//  Copyright © 2019 Stefan Sator. All rights reserved.
-//
 
 import Foundation
 

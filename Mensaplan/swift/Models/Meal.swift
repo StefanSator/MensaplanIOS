@@ -2,9 +2,6 @@
 //  Meal.swift
 //  Mensaplan
 //
-//  Created by Stefan Sator on 10.09.19.
-//  Copyright © 2019 Stefan Sator. All rights reserved.
-//
 
 import Foundation
 import UIKit

@@ -2,9 +2,6 @@
 //  FavoritesViewController.swift
 //  Mensaplan
 //
-//  Created by Stefan Sator on 16.09.19.
-//  Copyright © 2019 Stefan Sator. All rights reserved.
-//
 
 import UIKit
 

@@ -2,9 +2,6 @@
 //  Notification.swift
 //  Mensaplan
 //
-//  Created by Stefan Sator on 02.12.19.
-//  Copyright © 2019 Stefan Sator. All rights reserved.
-//
 
 import Foundation
 

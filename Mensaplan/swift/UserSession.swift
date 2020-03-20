@@ -2,9 +2,6 @@
 //  UserSession.swift
 //  Mensaplan
 //
-//  Created by Stefan Sator on 13.11.19.
-//  Copyright © 2019 Stefan Sator. All rights reserved.
-//
 
 import Foundation
 
